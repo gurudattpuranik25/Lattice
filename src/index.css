@@ -145,11 +145,34 @@
 /* React Flow custom styles */
 .react-flow__node {
   font-family: 'Inter', sans-serif;
+  transition: filter 0.2s ease;
+}
+
+.react-flow__node:hover {
+  filter: brightness(1.15);
+}
+
+.react-flow__node.selected {
+  filter: brightness(1.2);
 }
 
 .react-flow__edge-path {
-  stroke: #52525B;
   stroke-width: 2;
+  transition: stroke-opacity 0.2s ease;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-opacity: 1 !important;
+  stroke-width: 3;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5;
+  animation: flowEdgeDash 0.6s linear infinite;
+}
+
+@keyframes flowEdgeDash {
+  to { stroke-dashoffset: -10; }
 }
 
 .react-flow__minimap {
@@ -173,4 +196,13 @@
 .react-flow__controls-button:hover {
   background: #27272A !important;
   fill: #FAFAFA !important;
+}
+
+.react-flow__handle {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.react-flow__node:hover .react-flow__handle {
+  opacity: 1;
 }
