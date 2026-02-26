@@ -17,7 +17,7 @@ const steps = [
   {
     icon: LayoutGrid,
     title: '3. See It Visually',
-    description: 'Get interactive mind maps, flowcharts, flashcards, timelines, and more.',
+    description: 'Get interactive mind maps, flashcards, timelines, knowledge cards, and more.',
     color: { bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
   },
 ];

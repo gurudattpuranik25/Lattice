@@ -45,11 +45,11 @@ export function getSourceLabel(sourceType, sourceInfo) {
 export function getFormatColor(format) {
   const colors = {
     mindMap: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
-    flowchart: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
     timeline: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
     flashcards: 'bg-purple-500/15 text-purple-400 border-purple-500/30',
     infographic: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
     keyTakeaways: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+    knowledgeCards: 'bg-teal-500/15 text-teal-400 border-teal-500/30',
   };
   return colors[format] || 'bg-zinc-500/15 text-zinc-400 border-zinc-500/30';
 }

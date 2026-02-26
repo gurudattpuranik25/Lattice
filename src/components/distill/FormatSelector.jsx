@@ -1,22 +1,22 @@
 import { motion } from 'framer-motion';
-import { GitBranch, GitPullRequest, Clock, Layers, BarChart3, Zap, Sparkles } from 'lucide-react';
+import { GitBranch, Clock, Layers, BarChart3, Zap, LayoutGrid, Sparkles } from 'lucide-react';
 
 const formats = [
   { key: 'mindMap', icon: GitBranch, title: 'Mind Map', description: 'Best for: understanding connections between concepts', color: 'indigo' },
-  { key: 'flowchart', icon: GitPullRequest, title: 'Flowchart', description: 'Best for: processes, how-to content, step-by-step', color: 'emerald' },
   { key: 'timeline', icon: Clock, title: 'Timeline', description: 'Best for: historical events, project sequences', color: 'amber' },
   { key: 'flashcards', icon: Layers, title: 'Flashcards', description: 'Best for: studying, memorization, review', color: 'purple' },
   { key: 'infographic', icon: BarChart3, title: 'Infographic Summary', description: 'Best for: reports, data-heavy content', color: 'cyan' },
   { key: 'keyTakeaways', icon: Zap, title: 'Key Takeaways', description: 'Best for: quick overview, executive summary', color: 'rose' },
+  { key: 'knowledgeCards', icon: LayoutGrid, title: 'Knowledge Cards', description: 'Best for: visual dashboard of key facts, stats, and insights', color: 'teal' },
 ];
 
 const formatColors = {
   indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-400', hover: 'group-hover:text-indigo-300' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', hover: 'group-hover:text-emerald-300' },
   amber: { bg: 'bg-amber-500/10', text: 'text-amber-400', hover: 'group-hover:text-amber-300' },
   purple: { bg: 'bg-purple-500/10', text: 'text-purple-400', hover: 'group-hover:text-purple-300' },
   cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', hover: 'group-hover:text-cyan-300' },
   rose: { bg: 'bg-rose-500/10', text: 'text-rose-400', hover: 'group-hover:text-rose-300' },
+  teal: { bg: 'bg-teal-500/10', text: 'text-teal-400', hover: 'group-hover:text-teal-300' },
 };
 
 export default function FormatSelector({ onSelect, recommended = [] }) {

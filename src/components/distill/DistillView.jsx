@@ -12,22 +12,22 @@ import { FORMAT_NAMES } from '../../services/prompts';
 import ExportButton from './ExportButton';
 
 const MindMapView = lazy(() => import('../outputs/MindMapView'));
-const FlowchartView = lazy(() => import('../outputs/FlowchartView'));
 const TimelineView = lazy(() => import('../outputs/TimelineView'));
 const FlashcardsView = lazy(() => import('../outputs/FlashcardsView'));
 const InfographicView = lazy(() => import('../outputs/InfographicView'));
 const KeyTakeawaysView = lazy(() => import('../outputs/KeyTakeawaysView'));
+const KnowledgeCardsView = lazy(() => import('../outputs/KnowledgeCardsView'));
 
 const formatComponents = {
   mindMap: MindMapView,
-  flowchart: FlowchartView,
   timeline: TimelineView,
   flashcards: FlashcardsView,
   infographic: InfographicView,
   keyTakeaways: KeyTakeawaysView,
+  knowledgeCards: KnowledgeCardsView,
 };
 
-const formatKeys = ['mindMap', 'flowchart', 'timeline', 'flashcards', 'infographic', 'keyTakeaways'];
+const formatKeys = ['mindMap', 'timeline', 'flashcards', 'infographic', 'keyTakeaways', 'knowledgeCards'];
 
 const presetColors = ['#818CF8', '#34D399', '#FB923C', '#F472B6', '#38BDF8', '#FBBF24'];
 

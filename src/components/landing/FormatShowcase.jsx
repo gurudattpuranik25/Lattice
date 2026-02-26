@@ -1,22 +1,22 @@
 import { motion } from 'framer-motion';
-import { GitBranch, GitPullRequest, Clock, Layers, BarChart3, Zap } from 'lucide-react';
+import { GitBranch, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
 
 const formats = [
   { icon: GitBranch, title: 'Mind Map', description: 'See how ideas connect', color: 'indigo' },
-  { icon: GitPullRequest, title: 'Flowchart', description: 'Understand processes step by step', color: 'emerald' },
   { icon: Clock, title: 'Timeline', description: 'Events and sequences in order', color: 'amber' },
   { icon: Layers, title: 'Flashcards', description: 'Test your understanding', color: 'purple' },
   { icon: BarChart3, title: 'Infographic', description: 'Key stats and insights at a glance', color: 'cyan' },
   { icon: Zap, title: 'Key Takeaways', description: 'The 5-minute version', color: 'rose' },
+  { icon: LayoutGrid, title: 'Knowledge Cards', description: 'Dashboard of facts, stats, and insights', color: 'teal' },
 ];
 
 const colorStyles = {
   indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-400' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
   amber: { bg: 'bg-amber-500/10', text: 'text-amber-400' },
   purple: { bg: 'bg-purple-500/10', text: 'text-purple-400' },
   cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-400' },
   rose: { bg: 'bg-rose-500/10', text: 'text-rose-400' },
+  teal: { bg: 'bg-teal-500/10', text: 'text-teal-400' },
 };
 
 export default function FormatShowcase() {

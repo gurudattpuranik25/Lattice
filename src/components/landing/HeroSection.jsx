@@ -65,7 +65,7 @@ export default function HeroSection() {
           className="text-lg text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           Upload a PDF. Paste a YouTube link. Drop a document. Lattice uses AI to
-          transform it into mind maps, flowcharts, flashcards, and visual summaries
+          transform it into mind maps, flashcards, knowledge cards, and visual summaries
           you can scan in minutes.
         </motion.p>
 

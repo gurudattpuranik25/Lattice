@@ -26,22 +26,50 @@ export const MIND_MAP_PROMPT = `You are a knowledge structuring AI. Given the fo
 }
 Create 4-7 main branches with 2-4 leaves each. Labels should be concise (3-8 words). Capture the most important concepts and their relationships.`;
 
-export const FLOWCHART_PROMPT = `You are a process structuring AI. Given the following content, create a flowchart/process diagram. Return ONLY valid JSON with this exact structure:
+export const KNOWLEDGE_CARDS_PROMPT = `You are an information design AI. Given the following content, extract the most important pieces of information and present them as a set of knowledge cards. Return ONLY valid JSON with this exact structure:
 {
-  "title": "Process Title",
-  "steps": [
+  "title": "Dashboard Title",
+  "cards": [
     {
-      "id": "step-1",
-      "label": "Step description",
-      "type": "start",
-      "connections": [
-        { "target": "step-2", "label": "optional edge label" }
-      ]
+      "id": "card-1",
+      "type": "stat",
+      "value": "87%",
+      "label": "What this number represents"
+    },
+    {
+      "id": "card-2",
+      "type": "quote",
+      "text": "The exact or paraphrased quote",
+      "attribution": "Source or speaker"
+    },
+    {
+      "id": "card-3",
+      "type": "definition",
+      "term": "Key Term",
+      "explanation": "Clear 1-2 sentence definition"
+    },
+    {
+      "id": "card-4",
+      "type": "insight",
+      "title": "Insight Title",
+      "description": "2-3 sentence explanation of the insight"
+    },
+    {
+      "id": "card-5",
+      "type": "comparison",
+      "title": "X vs Y",
+      "left": { "label": "Option A", "points": ["Point 1", "Point 2"] },
+      "right": { "label": "Option B", "points": ["Point 1", "Point 2"] }
+    },
+    {
+      "id": "card-6",
+      "type": "fact",
+      "text": "An interesting or surprising fact from the content"
     }
   ],
   "summary": "One sentence summary"
 }
-Valid types: "start", "process", "decision", "end". For decision nodes, include two connections with labels like "Yes"/"No". Create 6-12 steps. Keep labels concise.`;
+Create 8-14 cards with a good mix of types. Use at least 3 different card types. Prioritize the most interesting and important information. Stats should use real numbers from the content when available.`;
 
 export const TIMELINE_PROMPT = `You are a timeline structuring AI. Given the following content, create a chronological timeline. Return ONLY valid JSON:
 {
@@ -114,18 +142,18 @@ Create 5-8 takeaways. importance is a number: 1 (low), 2 (medium), or 3 (high). 
 
 export const FORMAT_PROMPTS = {
   mindMap: MIND_MAP_PROMPT,
-  flowchart: FLOWCHART_PROMPT,
   timeline: TIMELINE_PROMPT,
   flashcards: FLASHCARDS_PROMPT,
   infographic: INFOGRAPHIC_PROMPT,
   keyTakeaways: KEY_TAKEAWAYS_PROMPT,
+  knowledgeCards: KNOWLEDGE_CARDS_PROMPT,
 };
 
 export const FORMAT_NAMES = {
   mindMap: 'Mind Map',
-  flowchart: 'Flowchart',
   timeline: 'Timeline',
   flashcards: 'Flashcards',
   infographic: 'Infographic Summary',
   keyTakeaways: 'Key Takeaways',
+  knowledgeCards: 'Knowledge Cards',
 };
