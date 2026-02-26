@@ -357,9 +357,9 @@ export default function FlashcardsView({ data }) {
   // --- Grid Mode ---
   return (
     <div className="py-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h2 className="font-heading font-bold text-2xl text-white">{data.title}</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button onClick={handleShuffle}
             className="btn-ghost flex items-center gap-2 text-sm">
             <Shuffle size={15} /> Shuffle

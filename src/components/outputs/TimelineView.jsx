@@ -32,7 +32,7 @@ export default function TimelineView({ data }) {
 
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
         <h2 className="font-heading font-bold text-2xl text-white">
           {data.title}
         </h2>
