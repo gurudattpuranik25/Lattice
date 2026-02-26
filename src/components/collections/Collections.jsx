@@ -48,7 +48,10 @@ export default function Collections() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="font-heading font-bold text-3xl text-white mb-8">Collections</h1>
+      <h1 className="font-heading font-bold text-3xl text-white mb-8 flex items-center gap-3">
+        <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-teal-400" />
+        Collections
+      </h1>
 
       {loading ? (
         <div className="flex flex-col lg:flex-row gap-6">

@@ -249,9 +249,12 @@ export default function NewDistill() {
             </motion.div>
           )}
 
-          <div className="text-center mb-8">
-            <h1 className="font-heading font-bold text-3xl text-white mb-2">New Distill</h1>
-            <p className="text-zinc-400">Drop content and let AI transform it into visual knowledge</p>
+          <div className="mb-8">
+            <h1 className="font-heading font-bold text-3xl text-white mb-2 flex items-center gap-3">
+              <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
+              New Distill
+            </h1>
+            <p className="text-zinc-400 leading-relaxed">Drop content and let AI transform it into visual knowledge</p>
           </div>
 
           <DropZone onFileSelect={handleFileSelect} onUrlSubmit={handleUrlSubmit} />
@@ -305,7 +308,7 @@ export default function NewDistill() {
             <AlertTriangle size={20} className="text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="text-white font-medium mb-1">Couldn't auto-extract from YouTube</h3>
-              <p className="text-sm text-zinc-400">
+              <p className="text-sm text-zinc-400 leading-relaxed">
                 YouTube is blocking automated requests. You can paste the video's transcript or
                 description below and we'll process it for you.
               </p>

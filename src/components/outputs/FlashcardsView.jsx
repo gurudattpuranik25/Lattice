@@ -272,7 +272,7 @@ export default function FlashcardsView({ data }) {
     return (
       <div className="py-8">
         <div className="flex items-center justify-between mb-8 max-w-2xl mx-auto">
-          <h2 className="font-heading font-semibold text-xl text-white">{data.title}</h2>
+          <h2 className="font-heading font-bold text-2xl text-white">{data.title}</h2>
           <button onClick={() => setStudyMode(false)}
             className="btn-ghost flex items-center gap-1.5 text-sm">
             <LayoutGrid size={14} /> Grid View
@@ -358,7 +358,7 @@ export default function FlashcardsView({ data }) {
   return (
     <div className="py-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-heading font-semibold text-xl text-white">{data.title}</h2>
+        <h2 className="font-heading font-bold text-2xl text-white">{data.title}</h2>
         <div className="flex items-center gap-2">
           <button onClick={handleShuffle}
             className="btn-ghost flex items-center gap-2 text-sm">

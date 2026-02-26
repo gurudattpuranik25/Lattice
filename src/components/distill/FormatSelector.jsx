@@ -109,7 +109,7 @@ export default function FormatSelector({ onSelect, recommended = [] }) {
       <h2 className="font-heading font-semibold text-xl text-white mb-2">
         Choose how you want to see this
       </h2>
-      <p className="text-sm text-zinc-400 mb-6">Select a visual format for your content.</p>
+      <p className="text-sm text-zinc-400 mb-6 leading-relaxed">Select a visual format for your content.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {formats.map(({ key, icon: Icon, title, description, color, preview }, index) => (

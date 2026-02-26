@@ -177,11 +177,10 @@ export default function InfographicView({ data }) {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center"
       >
-        <h2 className="font-heading font-bold text-3xl sm:text-4xl text-white mb-3">{data.title}</h2>
+        <h2 className="font-heading font-bold text-2xl text-white mb-2">{data.title}</h2>
         {data.subtitle && (
-          <p className="text-zinc-400 text-lg max-w-xl mx-auto">{data.subtitle}</p>
+          <p className="text-zinc-400 text-sm leading-relaxed">{data.subtitle}</p>
         )}
       </motion.div>
 
@@ -192,7 +191,7 @@ export default function InfographicView({ data }) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="font-heading font-semibold text-lg text-zinc-300 mb-5 text-center"
+            className="font-heading font-semibold text-lg text-zinc-300 mb-5"
           >
             By The Numbers
           </motion.h3>
@@ -211,7 +210,7 @@ export default function InfographicView({ data }) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-5"
+            className="mb-5"
           >
             <h3 className="font-heading font-semibold text-lg text-zinc-300">
               Key Insights
@@ -232,7 +231,7 @@ export default function InfographicView({ data }) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="font-heading font-semibold text-lg text-zinc-300 mb-5 text-center"
+            className="font-heading font-semibold text-lg text-zinc-300 mb-5"
           >
             How It Works
           </motion.h3>

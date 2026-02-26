@@ -242,9 +242,9 @@ export default function KnowledgeCardsView({ data }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10"
+          className="mb-8"
         >
-          <h2 className="font-heading font-bold text-2xl sm:text-3xl text-white">{data.title}</h2>
+          <h2 className="font-heading font-bold text-2xl text-white">{data.title}</h2>
         </motion.div>
       )}
 

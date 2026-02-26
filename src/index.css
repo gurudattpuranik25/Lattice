@@ -21,6 +21,8 @@
     color: #FAFAFA;
     min-height: 100vh;
     overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -146,13 +148,13 @@
     font-size: 106%;
   }
 
-  .text-scaled .text-xs { font-size: 0.8125rem; line-height: 1.25rem; }
-  .text-scaled .text-sm { font-size: 0.9375rem; line-height: 1.375rem; }
-  .text-scaled .text-base { font-size: 1.0625rem; line-height: 1.625rem; }
+  .text-scaled .text-xs { font-size: 0.8125rem; line-height: 1.375rem; }
+  .text-scaled .text-sm { font-size: 0.9375rem; line-height: 1.5rem; }
+  .text-scaled .text-base { font-size: 1.0625rem; line-height: 1.75rem; }
   .text-scaled .text-lg { font-size: 1.1875rem; line-height: 1.875rem; }
-  .text-scaled .text-xl { font-size: 1.3125rem; line-height: 1.875rem; }
-  .text-scaled .text-2xl { font-size: 1.625rem; line-height: 2.125rem; }
-  .text-scaled .text-3xl { font-size: 2rem; line-height: 2.375rem; }
+  .text-scaled .text-xl { font-size: 1.3125rem; line-height: 2rem; }
+  .text-scaled .text-2xl { font-size: 1.625rem; line-height: 2.25rem; }
+  .text-scaled .text-3xl { font-size: 2rem; line-height: 2.5rem; }
 
   /* Landing page animations */
   .btn-glow {

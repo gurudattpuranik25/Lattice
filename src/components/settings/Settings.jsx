@@ -51,7 +51,10 @@ export default function Settings() {
       transition={{ duration: 0.5 }}
       className="max-w-2xl"
     >
-      <h1 className="font-heading font-bold text-3xl text-white mb-8">Settings</h1>
+      <h1 className="font-heading font-bold text-3xl text-white mb-8 flex items-center gap-3">
+        <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-zinc-500" />
+        Settings
+      </h1>
 
       {/* Profile */}
       <section className="glass-card p-6 mb-6">
