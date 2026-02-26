@@ -1,4 +1,4 @@
-import { useMemo, useCallback, memo } from 'react';
+import { useMemo, memo } from 'react';
 import {
   ReactFlow,
   Background,
@@ -8,81 +8,75 @@ import {
   useEdgesState,
   Handle,
   Position,
+  BezierEdge,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import dagre from 'dagre';
 
-const branchColors = [
-  { main: '#818CF8', light: '#C7D2FE', bg: 'rgba(129,140,248,0.12)', glow: 'rgba(129,140,248,0.25)' },
-  { main: '#34D399', light: '#A7F3D0', bg: 'rgba(52,211,153,0.12)', glow: 'rgba(52,211,153,0.25)' },
-  { main: '#FB923C', light: '#FED7AA', bg: 'rgba(251,146,60,0.12)', glow: 'rgba(251,146,60,0.25)' },
-  { main: '#F472B6', light: '#FBCFE8', bg: 'rgba(244,114,182,0.12)', glow: 'rgba(244,114,182,0.25)' },
-  { main: '#38BDF8', light: '#BAE6FD', bg: 'rgba(56,189,248,0.12)', glow: 'rgba(56,189,248,0.25)' },
-  { main: '#A78BFA', light: '#DDD6FE', bg: 'rgba(167,139,250,0.12)', glow: 'rgba(167,139,250,0.25)' },
-  { main: '#FBBF24', light: '#FDE68A', bg: 'rgba(251,191,36,0.12)', glow: 'rgba(251,191,36,0.25)' },
+// --- Miro-inspired color palette ---
+const branchPalette = [
+  { bg: '#818CF8', text: '#FFFFFF', light: '#E0E7FF', soft: 'rgba(129,140,248,0.15)' },
+  { bg: '#34D399', text: '#FFFFFF', light: '#D1FAE5', soft: 'rgba(52,211,153,0.15)' },
+  { bg: '#FB923C', text: '#FFFFFF', light: '#FFEDD5', soft: 'rgba(251,146,60,0.15)' },
+  { bg: '#F472B6', text: '#FFFFFF', light: '#FCE7F3', soft: 'rgba(244,114,182,0.15)' },
+  { bg: '#38BDF8', text: '#FFFFFF', light: '#E0F2FE', soft: 'rgba(56,189,248,0.15)' },
+  { bg: '#A78BFA', text: '#FFFFFF', light: '#EDE9FE', soft: 'rgba(167,139,250,0.15)' },
+  { bg: '#FBBF24', text: '#18181B', light: '#FEF3C7', soft: 'rgba(251,191,36,0.15)' },
 ];
 
-// --- Custom Node Components ---
+// --- Custom Nodes: pill-shaped, colorful, clean ---
 
 const CenterNode = memo(({ data }) => (
   <div style={{
-    background: 'linear-gradient(135deg, #312E81 0%, #1E1B4B 100%)',
-    border: '2px solid #818CF8',
-    borderRadius: '20px',
-    padding: '20px 32px',
+    background: 'linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A78BFA 100%)',
+    borderRadius: '50px',
+    padding: '18px 36px',
     textAlign: 'center',
-    boxShadow: '0 0 40px rgba(129,140,248,0.2), 0 8px 32px rgba(0,0,0,0.4)',
-    minWidth: '200px',
-    maxWidth: '280px',
+    boxShadow: '0 0 50px rgba(99,102,241,0.3), 0 8px 32px rgba(0,0,0,0.3)',
+    cursor: 'grab',
   }}>
-    <Handle type="source" position={Position.Bottom} style={{ background: '#818CF8', width: 8, height: 8, border: '2px solid #312E81' }} />
-    <Handle type="target" position={Position.Top} style={{ background: '#818CF8', width: 8, height: 8, border: '2px solid #312E81' }} />
+    <Handle type="source" position={Position.Right} id="right" style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Left} id="left" style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Top} id="top" style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Bottom} id="bottom" style={{ opacity: 0 }} />
     <div style={{
-      fontSize: '16px',
-      fontWeight: '700',
-      color: '#E0E7FF',
+      fontSize: '17px',
+      fontWeight: '800',
+      color: '#FFFFFF',
       fontFamily: '"Instrument Sans", sans-serif',
-      letterSpacing: '-0.01em',
-      lineHeight: '1.3',
+      letterSpacing: '-0.02em',
+      lineHeight: '1.25',
+      textShadow: '0 1px 4px rgba(0,0,0,0.2)',
+      whiteSpace: 'nowrap',
     }}>
       {data.label}
     </div>
-    {data.summary && (
-      <div style={{
-        fontSize: '11px',
-        color: '#A5B4FC',
-        marginTop: '6px',
-        opacity: 0.8,
-      }}>
-        {data.summary}
-      </div>
-    )}
   </div>
 ));
 CenterNode.displayName = 'CenterNode';
 
 const BranchNode = memo(({ data }) => {
-  const color = data.color || branchColors[0];
+  const c = data.color || branchPalette[0];
   return (
     <div style={{
-      background: `linear-gradient(135deg, ${color.bg} 0%, rgba(24,24,27,0.95) 100%)`,
-      border: `1.5px solid ${color.main}60`,
-      borderLeft: `4px solid ${color.main}`,
-      borderRadius: '14px',
-      padding: '14px 20px',
-      minWidth: '160px',
-      maxWidth: '220px',
-      boxShadow: `0 0 20px ${color.glow}, 0 4px 16px rgba(0,0,0,0.3)`,
-      transition: 'box-shadow 0.2s',
+      background: c.bg,
+      borderRadius: '40px',
+      padding: '12px 24px',
+      textAlign: 'center',
+      boxShadow: `0 0 24px ${c.soft}, 0 4px 16px rgba(0,0,0,0.25)`,
+      cursor: 'grab',
+      transition: 'transform 0.15s ease, box-shadow 0.15s ease',
     }}>
-      <Handle type="target" position={Position.Top} style={{ background: color.main, width: 7, height: 7, border: '2px solid #18181B' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: color.main, width: 7, height: 7, border: '2px solid #18181B' }} />
+      <Handle type="target" position={Position.Left} id="target-left" style={{ opacity: 0 }} />
+      <Handle type="target" position={Position.Right} id="target-right" style={{ opacity: 0 }} />
+      <Handle type="source" position={Position.Left} id="left" style={{ opacity: 0 }} />
+      <Handle type="source" position={Position.Right} id="right" style={{ opacity: 0 }} />
       <div style={{
         fontSize: '13px',
-        fontWeight: '600',
-        color: color.light,
-        fontFamily: '"Instrument Sans", sans-serif',
+        fontWeight: '700',
+        color: c.text,
+        fontFamily: '"Inter", sans-serif',
         lineHeight: '1.3',
+        whiteSpace: 'nowrap',
       }}>
         {data.label}
       </div>
@@ -92,41 +86,28 @@ const BranchNode = memo(({ data }) => {
 BranchNode.displayName = 'BranchNode';
 
 const LeafNode = memo(({ data }) => {
-  const color = data.color || branchColors[0];
+  const c = data.color || branchPalette[0];
   return (
     <div style={{
-      background: 'rgba(24,24,27,0.9)',
-      border: `1px solid ${color.main}30`,
-      borderRadius: '12px',
-      padding: '10px 16px',
-      minWidth: '130px',
-      maxWidth: '180px',
-      backdropFilter: 'blur(8px)',
+      background: '#18181B',
+      border: `2px solid ${c.bg}50`,
+      borderRadius: '30px',
+      padding: '9px 18px',
+      textAlign: 'center',
+      cursor: 'grab',
+      transition: 'border-color 0.15s ease',
     }}>
-      <Handle type="target" position={Position.Top} style={{ background: color.main, width: 6, height: 6, border: '2px solid #18181B' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: color.main, width: 6, height: 6, border: '2px solid #18181B' }} />
+      <Handle type="target" position={Position.Left} id="target-left" style={{ opacity: 0 }} />
+      <Handle type="target" position={Position.Right} id="target-right" style={{ opacity: 0 }} />
       <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
+        fontSize: '12px',
+        fontWeight: '500',
+        color: c.bg,
+        fontFamily: '"Inter", sans-serif',
+        lineHeight: '1.3',
+        whiteSpace: 'nowrap',
       }}>
-        <div style={{
-          width: '6px',
-          height: '6px',
-          borderRadius: '50%',
-          background: color.main,
-          flexShrink: 0,
-          boxShadow: `0 0 8px ${color.main}`,
-        }} />
-        <div style={{
-          fontSize: '12px',
-          fontWeight: '500',
-          color: '#D4D4D8',
-          fontFamily: '"Inter", sans-serif',
-          lineHeight: '1.35',
-        }}>
-          {data.label}
-        </div>
+        {data.label}
       </div>
     </div>
   );
@@ -139,36 +120,81 @@ const nodeTypes = {
   leafNode: LeafNode,
 };
 
-// --- Layout ---
+// --- Radial Layout Engine ---
+// Places center in the middle, branches radiate outward left/right,
+// leaves fan out further from each branch — like a real mind map.
 
-function getLayoutedElements(nodes, edges) {
-  const g = new dagre.graphlib.Graph();
-  g.setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: 'TB', ranksep: 90, nodesep: 50, marginx: 40, marginy: 40 });
+function radialLayout(rfNodes, rfEdges) {
+  const centerNode = rfNodes.find(n => n.type === 'centerNode');
+  if (!centerNode) return rfNodes;
 
-  nodes.forEach((node) => {
-    const w = node.type === 'centerNode' ? 260 : node.type === 'branchNode' ? 200 : 170;
-    const h = node.type === 'centerNode' ? 80 : node.type === 'branchNode' ? 60 : 50;
-    g.setNode(node.id, { width: w, height: h });
+  // Build adjacency: parent -> children
+  const childMap = {};
+  rfEdges.forEach(e => {
+    if (!childMap[e.source]) childMap[e.source] = [];
+    childMap[e.source].push(e.target);
   });
 
-  edges.forEach((edge) => {
-    g.setEdge(edge.source, edge.target);
+  // Collect branch nodes (direct children of center)
+  const branchIds = childMap[centerNode.id] || [];
+  const branchCount = branchIds.length;
+
+  // Position center
+  const positioned = {};
+  positioned[centerNode.id] = { x: 0, y: 0 };
+
+  // Distribute branches: alternate left/right, spread vertically
+  const leftBranches = [];
+  const rightBranches = [];
+  branchIds.forEach((id, i) => {
+    if (i % 2 === 0) rightBranches.push(id);
+    else leftBranches.push(id);
   });
 
-  dagre.layout(g);
+  const BRANCH_X = 350;  // horizontal distance from center to branches
+  const BRANCH_Y_GAP = 140; // vertical gap between branches on same side
+  const LEAF_X = 260;    // horizontal distance from branch to leaves
+  const LEAF_Y_GAP = 55; // vertical gap between leaves
 
-  const layoutedNodes = nodes.map((node) => {
-    const pos = g.node(node.id);
-    const w = node.type === 'centerNode' ? 260 : node.type === 'branchNode' ? 200 : 170;
-    const h = node.type === 'centerNode' ? 80 : node.type === 'branchNode' ? 60 : 50;
+  function placeBranches(ids, side) {
+    const totalHeight = (ids.length - 1) * BRANCH_Y_GAP;
+    const startY = -totalHeight / 2;
+    const xDir = side === 'right' ? 1 : -1;
+
+    ids.forEach((branchId, idx) => {
+      const bx = xDir * BRANCH_X;
+      const by = startY + idx * BRANCH_Y_GAP;
+      positioned[branchId] = { x: bx, y: by };
+
+      // Place leaves for this branch
+      const leafIds = childMap[branchId] || [];
+      const leafTotalH = (leafIds.length - 1) * LEAF_Y_GAP;
+      const leafStartY = by - leafTotalH / 2;
+
+      leafIds.forEach((leafId, li) => {
+        positioned[leafId] = {
+          x: bx + xDir * LEAF_X,
+          y: leafStartY + li * LEAF_Y_GAP,
+        };
+      });
+    });
+  }
+
+  placeBranches(rightBranches, 'right');
+  placeBranches(leftBranches, 'left');
+
+  // Apply positions, centering each node on its position
+  return rfNodes.map(node => {
+    const pos = positioned[node.id];
+    if (!pos) return node; // fallback for orphans
+    // Estimate node width for centering
+    const w = node.type === 'centerNode' ? 200 : node.type === 'branchNode' ? 150 : 130;
+    const h = node.type === 'centerNode' ? 56 : node.type === 'branchNode' ? 42 : 36;
     return {
       ...node,
       position: { x: pos.x - w / 2, y: pos.y - h / 2 },
     };
   });
-
-  return { nodes: layoutedNodes, edges };
 }
 
 // --- Data Builder ---
@@ -180,59 +206,69 @@ function buildReactFlowData(data) {
   const rfEdges = [];
   let branchIndex = 0;
 
-  function processNode(node, parentId = null, color = branchColors[0]) {
+  // Track which side each branch goes to for edge routing
+  const branchSides = {};
+
+  function processNode(node, parentId = null, color = branchPalette[0], side = 'right') {
     const isCenter = node.type === 'center';
     const isBranch = node.type === 'branch';
 
     if (isBranch) {
-      color = branchColors[branchIndex % branchColors.length];
+      color = branchPalette[branchIndex % branchPalette.length];
+      side = branchIndex % 2 === 0 ? 'right' : 'left';
+      branchSides[node.id] = side;
       branchIndex++;
+    }
+
+    if (!isBranch && !isCenter) {
+      // leaf inherits parent's side
+      const parentSide = branchSides[parentId] || side;
+      branchSides[node.id] = parentSide;
     }
 
     rfNodes.push({
       id: node.id,
       type: isCenter ? 'centerNode' : isBranch ? 'branchNode' : 'leafNode',
-      data: {
-        label: node.label,
-        color,
-        summary: isCenter ? data.summary : undefined,
-      },
+      data: { label: node.label, color },
       position: { x: 0, y: 0 },
     });
 
     if (parentId) {
+      const nodeSide = branchSides[node.id] || side;
       rfEdges.push({
         id: `${parentId}-${node.id}`,
         source: parentId,
         target: node.id,
-        type: 'smoothstep',
+        type: 'default',
+        sourceHandle: nodeSide,
+        targetHandle: nodeSide === 'right' ? 'target-left' : 'target-right',
         style: {
-          stroke: color.main,
-          strokeWidth: isBranch ? 2.5 : 1.5,
-          opacity: isBranch ? 0.7 : 0.45,
+          stroke: color.bg,
+          strokeWidth: isBranch ? 3 : 2,
+          opacity: isBranch ? 0.6 : 0.35,
         },
-        animated: isBranch,
       });
     }
 
     if (node.children) {
-      node.children.forEach(child => processNode(child, node.id, color));
+      node.children.forEach(child => processNode(child, node.id, color, side));
     }
   }
 
+  // Process center nodes first
   data.nodes.forEach(node => {
-    if (node.type === 'center') {
-      processNode(node);
-    }
+    if (node.type === 'center') processNode(node);
   });
 
+  // Process branches
   data.nodes.forEach(node => {
-    if (node.type === 'branch') {
-      processNode(node, node.parent || 'center');
-    }
+    if (node.type === 'branch') processNode(node, node.parent || 'center');
   });
 
-  return getLayoutedElements(rfNodes, rfEdges);
+  // Apply radial layout
+  const layoutedNodes = radialLayout(rfNodes, rfEdges);
+
+  return { nodes: layoutedNodes, edges: rfEdges };
 }
 
 // --- Component ---
@@ -251,11 +287,9 @@ export default function MindMapView({ data }) {
   }
 
   return (
-    <div className="w-full h-[650px] rounded-2xl overflow-hidden border border-white/5 relative">
-      {/* Ambient glow behind the graph */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[400px] bg-indigo-500/[0.04] rounded-full blur-3xl" />
-      </div>
+    <div className="w-full h-[700px] rounded-2xl overflow-hidden border border-white/[0.06] relative"
+      style={{ background: '#0A0A0F' }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -263,22 +297,25 @@ export default function MindMapView({ data }) {
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         fitView
-        fitViewOptions={{ padding: 0.25 }}
-        minZoom={0.2}
-        maxZoom={1.8}
+        fitViewOptions={{ padding: 0.15 }}
+        minZoom={0.15}
+        maxZoom={2}
         proOptions={{ hideAttribution: true }}
-        style={{ background: '#09090B' }}
+        style={{ background: 'transparent' }}
+        defaultEdgeOptions={{
+          type: 'default',
+          style: { strokeWidth: 2 },
+        }}
       >
-        <Background color="#27272A" gap={24} size={1} />
+        <Background color="#1E1E28" gap={30} size={1.5} variant="dots" />
         <Controls className="!rounded-xl !border-white/5" />
         <MiniMap
           nodeColor={(node) => {
             if (node.type === 'centerNode') return '#818CF8';
-            const color = node.data?.color;
-            return color?.main || '#71717A';
+            return node.data?.color?.bg || '#71717A';
           }}
-          maskColor="rgba(0,0,0,0.75)"
-          style={{ background: '#18181B', borderRadius: '12px' }}
+          maskColor="rgba(0,0,0,0.8)"
+          style={{ background: '#111116', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}
         />
       </ReactFlow>
     </div>

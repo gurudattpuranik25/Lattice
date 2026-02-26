@@ -11,167 +11,130 @@ import {
 import '@xyflow/react/dist/style.css';
 import dagre from 'dagre';
 
-// --- Color System ---
-
-const typeConfig = {
-  start: {
-    gradient: 'linear-gradient(135deg, #065F46 0%, #064E3B 100%)',
-    border: '#34D399',
-    text: '#A7F3D0',
-    glow: 'rgba(52,211,153,0.2)',
-    icon: '▶',
-    markerColor: '#34D399',
-  },
-  process: {
-    gradient: 'linear-gradient(135deg, #1E1E24 0%, #18181B 100%)',
-    border: '#6366F1',
-    text: '#E0E7FF',
-    glow: 'rgba(99,102,241,0.12)',
-    icon: '⚙',
-    markerColor: '#818CF8',
-  },
-  decision: {
-    gradient: 'linear-gradient(135deg, #78350F 0%, #451A03 100%)',
-    border: '#F59E0B',
-    text: '#FDE68A',
-    glow: 'rgba(245,158,11,0.2)',
-    icon: '◆',
-    markerColor: '#F59E0B',
-  },
-  end: {
-    gradient: 'linear-gradient(135deg, #312E81 0%, #1E1B4B 100%)',
-    border: '#818CF8',
-    text: '#C7D2FE',
-    glow: 'rgba(129,140,248,0.2)',
-    icon: '■',
-    markerColor: '#818CF8',
-  },
+// --- Modern color system ---
+const palette = {
+  start: { bg: '#059669', border: '#34D399', text: '#FFFFFF', glow: 'rgba(52,211,153,0.15)', marker: '#34D399' },
+  process: { bg: '#1E1E28', border: '#6366F1', text: '#E0E7FF', glow: 'rgba(99,102,241,0.08)', marker: '#818CF8' },
+  decision: { bg: '#D97706', border: '#FBBF24', text: '#FFFFFF', glow: 'rgba(251,191,36,0.15)', marker: '#FBBF24' },
+  end: { bg: '#6366F1', border: '#A78BFA', text: '#FFFFFF', glow: 'rgba(129,140,248,0.15)', marker: '#818CF8' },
 };
 
 // --- Custom Nodes ---
 
-const StartNode = memo(({ data }) => {
-  const cfg = typeConfig.start;
-  return (
-    <div style={{
-      background: cfg.gradient,
-      border: `2px solid ${cfg.border}`,
-      borderRadius: '24px',
-      padding: '16px 28px',
-      textAlign: 'center',
-      boxShadow: `0 0 30px ${cfg.glow}, 0 8px 24px rgba(0,0,0,0.4)`,
-      minWidth: '180px',
-      maxWidth: '260px',
-    }}>
-      <Handle type="source" position={Position.Bottom} style={{ background: cfg.border, width: 8, height: 8, border: '2px solid #064E3B' }} />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-        <span style={{ fontSize: '14px', opacity: 0.8 }}>{cfg.icon}</span>
-        <span style={{
-          fontSize: '14px',
-          fontWeight: '700',
-          color: cfg.text,
-          fontFamily: '"Instrument Sans", sans-serif',
-        }}>
-          {data.label}
-        </span>
-      </div>
-    </div>
-  );
-});
-StartNode.displayName = 'StartNode';
-
-const ProcessNode = memo(({ data }) => {
-  const cfg = typeConfig.process;
-  return (
-    <div style={{
-      background: cfg.gradient,
-      border: `1.5px solid ${cfg.border}50`,
-      borderRadius: '14px',
-      padding: '14px 22px',
-      textAlign: 'center',
-      boxShadow: `0 0 20px ${cfg.glow}, 0 4px 16px rgba(0,0,0,0.3)`,
-      minWidth: '180px',
-      maxWidth: '260px',
-    }}>
-      <Handle type="target" position={Position.Top} style={{ background: cfg.border, width: 7, height: 7, border: '2px solid #18181B' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: cfg.border, width: 7, height: 7, border: '2px solid #18181B' }} />
+const StartNode = memo(({ data }) => (
+  <div style={{
+    background: palette.start.bg,
+    borderRadius: '50px',
+    padding: '14px 32px',
+    textAlign: 'center',
+    boxShadow: `0 0 30px ${palette.start.glow}, 0 4px 20px rgba(0,0,0,0.3)`,
+  }}>
+    <Handle type="source" position={Position.Bottom} style={{ opacity: 0 }} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
       <div style={{
-        fontSize: '13px',
-        fontWeight: '600',
-        color: cfg.text,
-        fontFamily: '"Inter", sans-serif',
-        lineHeight: '1.35',
+        width: 0, height: 0,
+        borderTop: '5px solid transparent',
+        borderBottom: '5px solid transparent',
+        borderLeft: '8px solid rgba(255,255,255,0.8)',
+      }} />
+      <span style={{
+        fontSize: '14px', fontWeight: '700', color: palette.start.text,
+        fontFamily: '"Inter", sans-serif', letterSpacing: '-0.01em',
       }}>
         {data.label}
-      </div>
+      </span>
     </div>
-  );
-});
+  </div>
+));
+StartNode.displayName = 'StartNode';
+
+const ProcessNode = memo(({ data }) => (
+  <div style={{
+    background: palette.process.bg,
+    border: `1.5px solid ${palette.process.border}40`,
+    borderRadius: '16px',
+    padding: '16px 24px',
+    textAlign: 'center',
+    boxShadow: `0 0 20px ${palette.process.glow}, 0 4px 16px rgba(0,0,0,0.25)`,
+    minWidth: '180px',
+    maxWidth: '280px',
+  }}>
+    <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Bottom} style={{ opacity: 0 }} />
+    <div style={{
+      fontSize: '13px', fontWeight: '600', color: palette.process.text,
+      fontFamily: '"Inter", sans-serif', lineHeight: '1.4',
+    }}>
+      {data.label}
+    </div>
+    {data.stepNum && (
+      <div style={{
+        position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)',
+        background: palette.process.border, color: '#FFFFFF',
+        fontSize: '10px', fontWeight: '800', borderRadius: '10px',
+        padding: '2px 8px', fontFamily: '"Inter", sans-serif',
+      }}>
+        {data.stepNum}
+      </div>
+    )}
+  </div>
+));
 ProcessNode.displayName = 'ProcessNode';
 
-const DecisionNode = memo(({ data }) => {
-  const cfg = typeConfig.decision;
-  return (
+const DecisionNode = memo(({ data }) => (
+  <div style={{
+    background: palette.decision.bg,
+    borderRadius: '16px',
+    padding: '16px 24px',
+    textAlign: 'center',
+    boxShadow: `0 0 30px ${palette.decision.glow}, 0 4px 20px rgba(0,0,0,0.3)`,
+    minWidth: '180px',
+    maxWidth: '260px',
+    position: 'relative',
+  }}>
+    <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Bottom} style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Right} id="right" style={{ opacity: 0 }} />
+    <Handle type="source" position={Position.Left} id="left" style={{ opacity: 0 }} />
+    {/* Diamond indicator */}
     <div style={{
-      background: cfg.gradient,
-      border: `2px solid ${cfg.border}`,
-      borderRadius: '14px',
-      padding: '16px 24px',
-      textAlign: 'center',
-      boxShadow: `0 0 30px ${cfg.glow}, 0 6px 20px rgba(0,0,0,0.4)`,
-      minWidth: '180px',
-      maxWidth: '260px',
-      position: 'relative',
+      position: 'absolute', top: '-8px', left: '50%', transform: 'translateX(-50%) rotate(45deg)',
+      width: '14px', height: '14px', background: palette.decision.border,
+      borderRadius: '2px',
+    }} />
+    <div style={{
+      fontSize: '13px', fontWeight: '700', color: palette.decision.text,
+      fontFamily: '"Inter", sans-serif', lineHeight: '1.35',
     }}>
-      <Handle type="target" position={Position.Top} style={{ background: cfg.border, width: 8, height: 8, border: '2px solid #451A03' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: cfg.border, width: 8, height: 8, border: '2px solid #451A03' }} />
-      <Handle type="source" position={Position.Right} id="right" style={{ background: cfg.border, width: 7, height: 7, border: '2px solid #451A03' }} />
-      <Handle type="source" position={Position.Left} id="left" style={{ background: cfg.border, width: 7, height: 7, border: '2px solid #451A03' }} />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-        <span style={{ fontSize: '12px', color: cfg.border }}>{cfg.icon}</span>
-        <span style={{
-          fontSize: '13px',
-          fontWeight: '700',
-          color: cfg.text,
-          fontFamily: '"Inter", sans-serif',
-          lineHeight: '1.35',
-        }}>
-          {data.label}
-        </span>
-      </div>
+      {data.label}
     </div>
-  );
-});
+  </div>
+));
 DecisionNode.displayName = 'DecisionNode';
 
-const EndNode = memo(({ data }) => {
-  const cfg = typeConfig.end;
-  return (
-    <div style={{
-      background: cfg.gradient,
-      border: `2px solid ${cfg.border}`,
-      borderRadius: '24px',
-      padding: '16px 28px',
-      textAlign: 'center',
-      boxShadow: `0 0 30px ${cfg.glow}, 0 8px 24px rgba(0,0,0,0.4)`,
-      minWidth: '180px',
-      maxWidth: '260px',
-    }}>
-      <Handle type="target" position={Position.Top} style={{ background: cfg.border, width: 8, height: 8, border: '2px solid #1E1B4B' }} />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-        <span style={{ fontSize: '12px', opacity: 0.8 }}>{cfg.icon}</span>
-        <span style={{
-          fontSize: '14px',
-          fontWeight: '700',
-          color: cfg.text,
-          fontFamily: '"Instrument Sans", sans-serif',
-        }}>
-          {data.label}
-        </span>
-      </div>
+const EndNode = memo(({ data }) => (
+  <div style={{
+    background: palette.end.bg,
+    borderRadius: '50px',
+    padding: '14px 32px',
+    textAlign: 'center',
+    boxShadow: `0 0 30px ${palette.end.glow}, 0 4px 20px rgba(0,0,0,0.3)`,
+  }}>
+    <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+      <div style={{
+        width: '10px', height: '10px', borderRadius: '2px',
+        background: 'rgba(255,255,255,0.8)',
+      }} />
+      <span style={{
+        fontSize: '14px', fontWeight: '700', color: palette.end.text,
+        fontFamily: '"Inter", sans-serif',
+      }}>
+        {data.label}
+      </span>
     </div>
-  );
-});
+  </div>
+));
 EndNode.displayName = 'EndNode';
 
 const nodeTypes = {
@@ -193,65 +156,69 @@ const nodeTypeMap = {
 function buildFlowchartData(data) {
   if (!data?.steps?.length) return { nodes: [], edges: [] };
 
-  const nodes = data.steps.map((step) => ({
-    id: step.id,
-    type: nodeTypeMap[step.type] || 'processNode',
-    data: { label: step.label },
-    position: { x: 0, y: 0 },
-  }));
+  let stepCounter = 0;
+  const nodes = data.steps.map((step) => {
+    const isProcess = step.type === 'process';
+    if (isProcess) stepCounter++;
+    return {
+      id: step.id,
+      type: nodeTypeMap[step.type] || 'processNode',
+      data: {
+        label: step.label,
+        stepNum: isProcess ? stepCounter : undefined,
+      },
+      position: { x: 0, y: 0 },
+    };
+  });
 
   const edges = [];
   data.steps.forEach(step => {
-    if (step.connections) {
-      const cfg = typeConfig[step.type] || typeConfig.process;
-      step.connections.forEach(conn => {
-        edges.push({
-          id: `${step.id}-${conn.target}`,
-          source: step.id,
-          target: conn.target,
-          label: conn.label || '',
-          type: 'smoothstep',
-          style: { stroke: cfg.markerColor, strokeWidth: 2, opacity: 0.7 },
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: cfg.markerColor,
-            width: 18,
-            height: 18,
-          },
-          labelStyle: {
-            fill: '#FAFAFA',
-            fontSize: 11,
-            fontWeight: 700,
-            fontFamily: '"Inter", sans-serif',
-            background: 'transparent',
-          },
-          labelBgStyle: {
-            fill: '#27272A',
-            fillOpacity: 0.95,
-            stroke: cfg.markerColor,
-            strokeWidth: 0.5,
-            strokeOpacity: 0.3,
-          },
-          labelBgPadding: [8, 5],
-          labelBgBorderRadius: 8,
-          animated: step.type === 'decision',
-        });
+    if (!step.connections) return;
+    const cfg = palette[step.type] || palette.process;
+    step.connections.forEach(conn => {
+      edges.push({
+        id: `${step.id}-${conn.target}`,
+        source: step.id,
+        target: conn.target,
+        label: conn.label || '',
+        type: 'default', // smooth bezier
+        style: { stroke: cfg.marker, strokeWidth: 2 },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: cfg.marker,
+          width: 16,
+          height: 16,
+        },
+        labelStyle: {
+          fill: '#FAFAFA',
+          fontSize: 11,
+          fontWeight: 700,
+          fontFamily: '"Inter", sans-serif',
+        },
+        labelBgStyle: {
+          fill: '#18181B',
+          fillOpacity: 0.95,
+          rx: 8,
+          ry: 8,
+        },
+        labelBgPadding: [8, 5],
+        labelBgBorderRadius: 8,
       });
-    }
+    });
   });
 
   // Dagre layout
   const g = new dagre.graphlib.Graph();
   g.setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: 'TB', ranksep: 110, nodesep: 80, marginx: 40, marginy: 40 });
+  g.setGraph({ rankdir: 'TB', ranksep: 100, nodesep: 100, marginx: 60, marginy: 60 });
 
-  nodes.forEach(n => g.setNode(n.id, { width: 240, height: 65 }));
+  nodes.forEach(n => g.setNode(n.id, { width: 240, height: 60 }));
   edges.forEach(e => g.setEdge(e.source, e.target));
   dagre.layout(g);
 
   const layoutedNodes = nodes.map(n => {
     const pos = g.node(n.id);
-    return { ...n, position: { x: pos.x - 120, y: pos.y - 32 } };
+    return { ...n, position: { x: pos.x - 120, y: pos.y - 30 } };
   });
 
   return { nodes: layoutedNodes, edges };
@@ -267,35 +234,35 @@ export default function FlowchartView({ data }) {
   }
 
   return (
-    <div className="w-full h-[700px] rounded-2xl overflow-hidden border border-white/5 relative">
-      {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-emerald-500/[0.03] rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-indigo-500/[0.03] rounded-full blur-3xl" />
-      </div>
+    <div className="w-full h-[700px] rounded-2xl overflow-hidden border border-white/[0.06] relative"
+      style={{ background: '#0A0A0F' }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         fitView
-        fitViewOptions={{ padding: 0.3 }}
-        minZoom={0.2}
+        fitViewOptions={{ padding: 0.25 }}
+        minZoom={0.15}
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
-        style={{ background: '#09090B' }}
+        style={{ background: 'transparent' }}
         nodesDraggable={true}
         nodesConnectable={false}
-        elementsSelectable={true}
+        defaultEdgeOptions={{
+          type: 'default',
+          style: { strokeWidth: 2 },
+        }}
       >
-        <Background color="#27272A" gap={24} size={1} />
+        <Background color="#1E1E28" gap={30} size={1.5} variant="dots" />
         <Controls className="!rounded-xl !border-white/5" />
         <MiniMap
           nodeColor={(node) => {
             const type = data.steps.find(s => s.id === node.id)?.type;
-            return typeConfig[type]?.border || '#71717A';
+            return palette[type]?.border || '#71717A';
           }}
-          maskColor="rgba(0,0,0,0.75)"
-          style={{ background: '#18181B', borderRadius: '12px' }}
+          maskColor="rgba(0,0,0,0.8)"
+          style={{ background: '#111116', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}
         />
       </ReactFlow>
     </div>
