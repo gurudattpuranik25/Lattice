@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { LogOut, Trash2, Moon } from 'lucide-react';
+import { LogOut, Trash2, Moon, Mail, Calendar, Hash, Star, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { getUserSettings, updateUserSettings } from '../../services/firestoreService';
+import { getUserSettings, updateUserSettings, getDistillStats } from '../../services/firestoreService';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { FORMAT_NAMES } from '../../services/prompts';
 
 export default function Settings() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  usePageTitle('Settings');
   const [settings, setSettings] = useState({ defaultFormat: 'keyTakeaways' });
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(null);
   const [confirmDeleteAll, setConfirmDeleteAll] = useState(false);
 
   useEffect(() => {
@@ -21,6 +24,7 @@ export default function Settings() {
         setSettings(s);
         setLoading(false);
       });
+      getDistillStats(user.uid).then(setStats);
     }
   }, [user]);
 
@@ -44,6 +48,10 @@ export default function Settings() {
     navigate('/');
   };
 
+  const memberSince = user?.metadata?.creationTime
+    ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -56,20 +64,65 @@ export default function Settings() {
         Settings
       </h1>
 
-      {/* Profile */}
-      <section className="glass-card p-6 mb-6">
-        <h2 className="font-heading font-semibold text-lg text-white mb-4">Profile</h2>
-        <div className="flex items-center gap-4">
-          {user?.photoURL ? (
-            <img src={user.photoURL} alt="" className="w-14 h-14 rounded-full" referrerPolicy="no-referrer" />
-          ) : (
-            <div className="w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center text-xl text-indigo-400 font-bold">
-              {user?.displayName?.[0]}
+      {/* Profile Card */}
+      <section className="glass-card mb-6 overflow-hidden">
+        {/* Banner with avatar + info inside */}
+        <div className="relative overflow-hidden px-6 pt-6 pb-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-violet-500/15 to-purple-500/10" />
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(129,140,248,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(167,139,250,0.1) 0%, transparent 50%)',
+          }} />
+          {/* Decorative dots */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="profile-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="white" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#profile-dots)" />
+          </svg>
+
+          <div className="relative flex items-center gap-4">
+            {user?.photoURL ? (
+              <img
+                src={user.photoURL}
+                alt=""
+                className="w-20 h-20 rounded-2xl border-2 border-white/10 shadow-lg"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-2xl border-2 border-white/10 bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-2xl text-white font-bold shadow-lg">
+                {user?.displayName?.[0]}
+              </div>
+            )}
+            <div>
+              <h2 className="font-heading font-bold text-xl text-white">{user?.displayName}</h2>
+              <div className="flex items-center gap-1.5 text-sm text-zinc-300/70 mt-0.5">
+                <Mail size={13} />
+                {user?.email}
+              </div>
             </div>
-          )}
-          <div>
-            <div className="text-white font-medium">{user?.displayName}</div>
-            <div className="text-sm text-zinc-400">{user?.email}</div>
+          </div>
+        </div>
+
+        {/* Account stats */}
+        <div className="px-6 pb-6 pt-4">
+          <div className="grid grid-cols-3 gap-3">
+            {memberSince && (
+              <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
+                <Calendar size={15} className="text-indigo-400 mx-auto mb-1.5" />
+                <div className="text-xs text-zinc-500">Member since</div>
+                <div className="text-sm text-white font-medium mt-0.5">{memberSince}</div>
+              </div>
+            )}
+            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
+              <Hash size={15} className="text-emerald-400 mx-auto mb-1.5" />
+              <div className="text-xs text-zinc-500">Total distills</div>
+              <div className="text-sm text-white font-medium mt-0.5">{stats?.total ?? '—'}</div>
+            </div>
+            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
+              <Star size={15} className="text-amber-400 mx-auto mb-1.5" />
+              <div className="text-xs text-zinc-500">Favorite format</div>
+              <div className="text-sm text-white font-medium mt-0.5">{stats?.mostUsedFormat ? (FORMAT_NAMES[stats.mostUsedFormat] || stats.mostUsedFormat) : '—'}</div>
+            </div>
           </div>
         </div>
       </section>
@@ -111,7 +164,7 @@ export default function Settings() {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm text-white">Delete All Data</div>
-            <div className="text-xs text-zinc-500">Permanently remove all distills and collections</div>
+            <div className="text-xs text-zinc-500 leading-relaxed">Permanently remove all distills and collections</div>
           </div>
           <button onClick={() => setConfirmDeleteAll(true)} className="btn-danger flex items-center gap-2 text-sm">
             <Trash2 size={15} />

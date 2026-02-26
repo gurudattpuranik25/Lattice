@@ -8,6 +8,7 @@ import { extractContent, detectSourceType, extractYouTubeId } from '../../servic
 import { processWithClaude } from '../../services/claudeService';
 import { createDistill } from '../../services/firestoreService';
 import { getTextPreview, formatFileSize } from '../../utils/textTruncator';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import DropZone from '../dashboard/DropZone';
 import FormatSelector from './FormatSelector';
 import ProcessingScreen from './ProcessingScreen';
@@ -90,6 +91,7 @@ export default function NewDistill() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  usePageTitle('New Distill');
   const [step, setStep] = useState(1);
   const [extracting, setExtracting] = useState(false);
   const [input, setInput] = useState(null);

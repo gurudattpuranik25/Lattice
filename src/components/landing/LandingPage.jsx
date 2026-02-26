@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import Navbar from '../shared/Navbar';
 import HeroSection from './HeroSection';
 import HowItWorks from './HowItWorks';
@@ -222,6 +223,7 @@ function FloatingDot({ className, delay = 0 }) {
 export default function LandingPage() {
   const { user, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  usePageTitle();
 
   const handleGetStarted = async () => {
     if (user) {

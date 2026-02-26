@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import { useDistills } from '../../hooks/useDistills';
 import { getGreeting } from '../../utils/formatDate';
 import DropZone from './DropZone';
@@ -13,6 +14,7 @@ export default function DashboardHome() {
   const { distills, loading } = useDistills();
   const navigate = useNavigate();
 
+  usePageTitle('Dashboard');
   const firstName = user?.displayName?.split(' ')[0] || 'there';
 
   const handleFileSelect = (file) => {

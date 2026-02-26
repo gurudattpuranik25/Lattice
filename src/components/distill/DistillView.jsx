@@ -10,6 +10,7 @@ import { getDistill, updateDistill, deleteDistill, addDistillToCollection, remov
 import { processWithClaude } from '../../services/claudeService';
 import { getSourceLabel, getFormatColor } from '../../utils/sourceTypeDetector';
 import { FORMAT_NAMES } from '../../services/prompts';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import ExportButton from './ExportButton';
 
 const MindMapView = lazy(() => import('../outputs/MindMapView'));
@@ -220,6 +221,8 @@ export default function DistillView() {
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleInput, setTitleInput] = useState('');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  usePageTitle(distill ? `${distill.title} — ${FORMAT_NAMES[activeFormat] || ''}` : 'Loading...');
 
   useEffect(() => {
     if (!user || !id) return;

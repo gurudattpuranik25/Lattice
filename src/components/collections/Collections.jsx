@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCollections } from '../../hooks/useCollections';
 import { useDistills } from '../../hooks/useDistills';
 import { createCollection, deleteCollection } from '../../services/firestoreService';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import DistillCard from '../dashboard/DistillCard';
 import EmptyState from '../shared/EmptyState';
 import ConfirmDialog from '../shared/ConfirmDialog';
@@ -13,6 +14,7 @@ import CreateCollectionModal from './CreateCollectionModal';
 
 export default function Collections() {
   const { user } = useAuth();
+  usePageTitle('Collections');
   const { collections, loading } = useCollections();
   const { distills } = useDistills();
   const [selectedId, setSelectedId] = useState(null);

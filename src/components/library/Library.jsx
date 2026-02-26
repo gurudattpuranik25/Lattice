@@ -7,6 +7,7 @@ import { formatRelativeDate } from '../../utils/formatDate';
 import { getSourceIcon, getSourceLabel, getFormatColor, getSourceColor } from '../../utils/sourceTypeDetector';
 import { FORMAT_NAMES } from '../../services/prompts';
 import { truncateText } from '../../utils/textTruncator';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import DistillCard from '../dashboard/DistillCard';
 import EmptyState from '../shared/EmptyState';
 import LibraryFilters from './LibraryFilters';
@@ -14,6 +15,7 @@ import LibraryFilters from './LibraryFilters';
 export default function Library() {
   const { distills, loading } = useDistills(200);
   const navigate = useNavigate();
+  usePageTitle('Library');
 
   const [search, setSearch] = useState('');
   const [sourceFilter, setSourceFilter] = useState('all');
