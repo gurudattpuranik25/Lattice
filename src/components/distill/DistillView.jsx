@@ -298,8 +298,26 @@ export default function DistillView() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-32">
-        <Loader2 size={24} className="animate-spin text-zinc-400" />
+      <div>
+        {/* Top bar skeleton */}
+        <div className="flex items-center gap-4 mb-8">
+          <div className="shimmer w-10 h-10 rounded-xl" />
+          <div className="shimmer h-7 w-64 rounded-lg" />
+          <div className="shimmer h-6 w-20 rounded-md ml-2" />
+          <div className="flex-1" />
+          <div className="flex gap-2">
+            <div className="shimmer h-9 w-24 rounded-xl" />
+            <div className="shimmer h-9 w-28 rounded-xl" />
+          </div>
+        </div>
+        {/* Tabs skeleton */}
+        <div className="flex gap-2 mb-8">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="shimmer h-10 rounded-xl" style={{ width: `${80 + Math.random() * 40}px` }} />
+          ))}
+        </div>
+        {/* Content skeleton */}
+        <div className="shimmer h-[500px] rounded-2xl" />
       </div>
     );
   }

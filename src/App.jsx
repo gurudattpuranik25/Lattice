@@ -41,16 +41,25 @@ export default function App() {
             background: '#18181B',
             color: '#FAFAFA',
             border: '1px solid rgba(255, 255, 255, 0.06)',
-            borderRadius: '12px',
+            borderRadius: '14px',
             fontSize: '14px',
             fontFamily: 'Inter, sans-serif',
+            padding: '12px 16px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04)',
           },
           success: {
             iconTheme: { primary: '#34D399', secondary: '#18181B' },
+            style: {
+              borderLeft: '3px solid #34D399',
+            },
           },
           error: {
             iconTheme: { primary: '#EF4444', secondary: '#18181B' },
+            style: {
+              borderLeft: '3px solid #EF4444',
+            },
           },
+          duration: 3000,
         }}
       />
     </AuthProvider>

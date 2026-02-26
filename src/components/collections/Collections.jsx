@@ -50,6 +50,20 @@ export default function Collections() {
     >
       <h1 className="font-heading font-bold text-3xl text-white mb-8">Collections</h1>
 
+      {loading ? (
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-64 flex-shrink-0 space-y-2">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="shimmer h-11 rounded-xl" />
+            ))}
+          </div>
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="shimmer h-36 rounded-2xl" />
+            ))}
+          </div>
+        </div>
+      ) : (
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left panel */}
         <div className="w-full lg:w-64 flex-shrink-0 space-y-2">
@@ -117,6 +131,7 @@ export default function Collections() {
           )}
         </div>
       </div>
+      )}
 
       <CreateCollectionModal
         isOpen={modalOpen}

@@ -52,9 +52,30 @@ export default function DashboardHome() {
         <DropZone onFileSelect={handleFileSelect} onUrlSubmit={handleUrlSubmit} />
       </div>
 
-      {!loading && <RecentDistills distills={distills} />}
-
-      <StatsCards />
+      {loading ? (
+        <div className="space-y-10">
+          {/* Recent skeleton */}
+          <div>
+            <div className="shimmer h-6 w-32 rounded-lg mb-6" />
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="shimmer h-36 rounded-2xl" />
+              ))}
+            </div>
+          </div>
+          {/* Stats skeleton */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="shimmer h-28 rounded-2xl" />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <>
+          <RecentDistills distills={distills} />
+          <StatsCards />
+        </>
+      )}
     </motion.div>
   );
 }
