@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-zinc-950 relative">
+    <div className="min-h-screen bg-zinc-950 relative text-scaled">
       {/* Subtle ambient glow for the dashboard */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-indigo-500/[0.02] rounded-full blur-3xl" />
