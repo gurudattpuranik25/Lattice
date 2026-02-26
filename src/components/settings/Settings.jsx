@@ -4,7 +4,7 @@ import { LogOut, Trash2, Moon, Mail, Calendar, Hash, Star, FileText } from 'luci
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { getUserSettings, updateUserSettings, getDistillStats } from '../../services/firestoreService';
+import { getUserSettings, updateUserSettings, getDistillStats, deleteAllUserData } from '../../services/firestoreService';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { FORMAT_NAMES } from '../../services/prompts';
@@ -39,8 +39,14 @@ export default function Settings() {
     }
   };
 
-  const handleDeleteAll = () => {
-    toast.error('This feature is coming soon.');
+  const handleDeleteAll = async () => {
+    try {
+      await deleteAllUserData(user.uid);
+      setStats({ total: 0, thisWeek: 0, mostUsedFormat: 'None', totalPages: 0 });
+      toast.success('All data deleted successfully');
+    } catch {
+      toast.error('Failed to delete data');
+    }
   };
 
   const handleLogout = async () => {

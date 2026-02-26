@@ -144,6 +144,25 @@ export async function removeDistillFromCollection(userId, distillId, collectionI
   await updateDoc(collRef, { distillCount: increment(-1) });
 }
 
+// Delete All User Data
+export async function deleteAllUserData(userId) {
+  // Delete all distills
+  const distillsRef = collection(db, 'users', userId, 'distills');
+  const distillSnap = await getDocs(distillsRef);
+  const distillDeletes = distillSnap.docs.map(d => deleteDoc(d.ref));
+
+  // Delete all collections
+  const collectionsRef = collection(db, 'users', userId, 'collections');
+  const collSnap = await getDocs(collectionsRef);
+  const collDeletes = collSnap.docs.map(d => deleteDoc(d.ref));
+
+  await Promise.all([...distillDeletes, ...collDeletes]);
+
+  // Reset user profile settings
+  const userRef = doc(db, 'users', userId, 'profile', 'info');
+  await updateDoc(userRef, { settings: { defaultFormat: 'keyTakeaways' } });
+}
+
 // Stats
 export async function getDistillStats(userId) {
   const distillsRef = collection(db, 'users', userId, 'distills');
