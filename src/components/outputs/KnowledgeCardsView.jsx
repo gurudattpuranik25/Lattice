@@ -165,7 +165,7 @@ function ComparisonCard({ card, config }) {
   return (
     <div>
       <div className="text-[15px] font-semibold text-white mb-3">{card.title}</div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div
           className="rounded-xl p-3.5"
           style={{ background: config.accentSoft, border: `1px solid ${config.border}` }}

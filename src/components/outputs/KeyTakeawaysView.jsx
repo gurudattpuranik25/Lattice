@@ -105,7 +105,7 @@ export default function KeyTakeawaysView({ data }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-10 glass-card p-8 text-center"
+          className="mt-8 sm:mt-10 glass-card p-5 sm:p-8 text-center"
         >
           <p className="text-xs text-zinc-500 uppercase tracking-wider mb-3">One-Sentence Summary</p>
           <p className="text-lg text-zinc-200 italic leading-relaxed">

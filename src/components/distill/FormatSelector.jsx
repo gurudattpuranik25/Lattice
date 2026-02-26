@@ -111,7 +111,7 @@ export default function FormatSelector({ onSelect, recommended = [] }) {
       </h2>
       <p className="text-sm text-zinc-400 mb-6 leading-relaxed">Select a visual format for your content.</p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {formats.map(({ key, icon: Icon, title, description, color, preview }, index) => (
           <motion.button
             key={key}
@@ -119,7 +119,7 @@ export default function FormatSelector({ onSelect, recommended = [] }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.06 }}
             onClick={() => onSelect(key)}
-            className="glass-card glass-card-hover p-5 text-left relative group"
+            className="glass-card glass-card-hover p-4 sm:p-5 text-left relative group"
           >
             {recommended.includes(key) && (
               <span className="absolute top-3 right-3 flex items-center gap-1 text-xs text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-md">

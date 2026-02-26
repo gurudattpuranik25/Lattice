@@ -96,7 +96,7 @@ function StatCard({ icon: Icon, value, label, index, iconBg, iconColor, valueCol
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="glass-card glass-card-hover p-5 group"
+      className="glass-card glass-card-hover p-4 sm:p-5 group"
     >
       <div className="flex items-start justify-between mb-3">
         <div className={`w-8 h-8 rounded-lg ${iconBg} flex items-center justify-center`}>
@@ -104,7 +104,7 @@ function StatCard({ icon: Icon, value, label, index, iconBg, iconColor, valueCol
         </div>
         {sparkData && <Sparkline data={sparkData} color={sparkColor} />}
       </div>
-      <div className={`font-mono font-bold text-2xl mb-1 ${valueColor}`}>
+      <div className={`font-mono font-bold text-xl sm:text-2xl mb-1 ${valueColor}`}>
         {isNumber ? count : value}
       </div>
       <div className="text-xs text-zinc-400">{label}</div>

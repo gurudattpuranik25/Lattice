@@ -23,7 +23,7 @@ function Stepper({ currentStep }) {
   const stepNum = typeof currentStep === 'number' ? currentStep : 1;
 
   return (
-    <div className="flex items-center justify-center mb-10">
+    <div className="flex items-center justify-center mb-6 sm:mb-10">
       {stepperSteps.map((s, i) => {
         const isCompleted = stepNum > s.num;
         const isActive = stepNum === s.num;
@@ -67,7 +67,7 @@ function Stepper({ currentStep }) {
 
             {/* Connector line */}
             {i < stepperSteps.length - 1 && (
-              <div className="w-16 sm:w-24 h-[2px] mx-2 mb-5 rounded-full overflow-hidden bg-zinc-800">
+              <div className="w-10 sm:w-24 h-[2px] mx-1 sm:mx-2 mb-5 rounded-full overflow-hidden bg-zinc-800">
                 <motion.div
                   className="h-full rounded-full"
                   initial={{ width: '0%' }}
@@ -218,7 +218,7 @@ export default function NewDistill() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="max-w-4xl mx-auto py-8"
+      className="max-w-4xl mx-auto py-4 sm:py-8"
     >
       {/* Stepper */}
       <Stepper currentStep={typeof step === 'number' ? step : 1} />
@@ -252,7 +252,7 @@ export default function NewDistill() {
           )}
 
           <div className="mb-8">
-            <h1 className="font-heading font-bold text-3xl text-white mb-2 flex items-center gap-3">
+            <h1 className="font-heading font-bold text-2xl sm:text-3xl text-white mb-2 flex items-center gap-3">
               <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-violet-500" />
               New Distill
             </h1>

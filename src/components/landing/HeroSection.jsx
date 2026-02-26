@@ -37,7 +37,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative pt-36 pb-24 overflow-hidden">
+    <section className="relative pt-24 sm:pt-36 pb-16 sm:pb-24 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-indigo-500/8 rounded-full blur-3xl" />
@@ -51,7 +51,7 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center relative z-10">
         {/* Floating badges — hidden on mobile */}
         <div className="hidden lg:block">
           {floatingBadges.map((badge) => (
@@ -88,7 +88,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl leading-tight mb-6"
+          className="font-heading font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-4 sm:mb-6"
         >
           Drop <span className="gradient-text">anything</span>.
           <br />
@@ -99,7 +99,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-lg text-zinc-400 max-w-2xl mx-auto mb-6 leading-relaxed"
+          className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto mb-4 sm:mb-6 leading-relaxed px-2 sm:px-0"
         >
           Upload a PDF. Paste a YouTube link. Drop a document. Lattice uses AI to
           transform it into mind maps, flashcards, knowledge cards, and visual summaries
@@ -111,7 +111,7 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.25 }}
-          className="flex items-center justify-center gap-4 mb-10"
+          className="flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10"
         >
           {formatIcons.map((fmt) => (
             <div key={fmt.label} className="flex items-center gap-1.5" title={fmt.label}>

@@ -54,7 +54,7 @@ export default function Navbar() {
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5 group">
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(129,140,248,0.6)]">
               <rect width="32" height="32" rx="8" fill="#818CF8"/>
@@ -67,7 +67,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             {/* Nav links — hidden on mobile */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (

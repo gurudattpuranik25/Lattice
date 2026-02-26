@@ -33,13 +33,13 @@ export default function LibraryFilters({
         />
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 justify-between">
-        <div className="flex gap-1.5">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-between">
+        <div className="flex gap-1 sm:gap-1.5 overflow-x-auto pb-1 -mb-1">
           {sourceFilters.map(f => (
             <button
               key={f.key}
               onClick={() => onSourceFilterChange(f.key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium transition-all border whitespace-nowrap ${
                 sourceFilter === f.key
                   ? f.activeClass
                   : 'text-zinc-400 hover:text-white hover:bg-white/5 border-transparent'

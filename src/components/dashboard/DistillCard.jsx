@@ -17,7 +17,7 @@ export default function DistillCard({ distill, index = 0 }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
       onClick={() => navigate(`/dashboard/distill/${distill.id}`)}
-      className="glass-card glass-card-hover p-6 cursor-pointer group"
+      className="glass-card glass-card-hover p-4 sm:p-6 cursor-pointer group"
     >
       <div className="flex items-start gap-3 mb-3">
         <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${

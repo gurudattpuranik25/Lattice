@@ -125,22 +125,22 @@ function MiniPreview({ type, color }) {
 
 export default function FormatShowcase() {
   return (
-    <section id="formats" className="py-24">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="formats" className="py-16 sm:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="font-heading font-bold text-3xl md:text-4xl mb-3">
+          <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl mb-3">
             Six Ways to See Knowledge
           </h2>
           <p className="text-zinc-400 text-lg">Choose the format that fits how you learn best</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {formats.map((format, index) => {
             const c = colorStyles[format.color];
             return (
@@ -150,7 +150,7 @@ export default function FormatShowcase() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
-                className={`glass-card p-6 border-l-2 ${c.border} group hover:bg-white/[0.04] hover:-translate-y-1 hover:shadow-lg ${c.glow} transition-all duration-300 cursor-default`}
+                className={`glass-card p-4 sm:p-6 border-l-2 ${c.border} group hover:bg-white/[0.04] hover:-translate-y-1 hover:shadow-lg ${c.glow} transition-all duration-300 cursor-default`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className={`w-11 h-11 rounded-xl ${c.bg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>

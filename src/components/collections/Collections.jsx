@@ -50,7 +50,7 @@ export default function Collections() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="font-heading font-bold text-3xl text-white mb-8 flex items-center gap-3">
+      <h1 className="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 sm:mb-8 flex items-center gap-3">
         <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-teal-400" />
         Collections
       </h1>
@@ -69,12 +69,12 @@ export default function Collections() {
           </div>
         </div>
       ) : (
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left panel */}
-        <div className="w-full lg:w-64 flex-shrink-0 space-y-2">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+        {/* Left panel — horizontal scroll on mobile, vertical sidebar on desktop */}
+        <div className="w-full lg:w-64 flex-shrink-0 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
           <button
             onClick={() => setSelectedId(null)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+            className={`w-full lg:w-full flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
               selectedId === null
                 ? 'bg-white/5 text-white border-l-[3px] border-indigo-400 pl-[13px]'
                 : 'text-zinc-400 hover:bg-white/5'
@@ -88,10 +88,10 @@ export default function Collections() {
           </button>
 
           {collections.map(col => (
-            <div key={col.id} className="group flex items-center">
+            <div key={col.id} className="group flex items-center flex-shrink-0">
               <button
                 onClick={() => setSelectedId(col.id)}
-                className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                   selectedId === col.id
                     ? 'bg-white/5 text-white border-l-[3px] border-indigo-400 pl-[13px]'
                     : 'text-zinc-400 hover:bg-white/5'
@@ -112,7 +112,7 @@ export default function Collections() {
 
           <button
             onClick={() => setModalOpen(true)}
-            className="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-zinc-500 hover:text-indigo-400 hover:bg-white/5 transition-all"
+            className="w-full lg:w-full flex-shrink-0 flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-zinc-500 hover:text-indigo-400 hover:bg-white/5 whitespace-nowrap transition-all"
           >
             <Plus size={16} />
             New Collection

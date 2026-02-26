@@ -75,10 +75,10 @@ export default function ProcessingScreen({ currentStep, format, sourceType, erro
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="max-w-lg mx-auto py-16"
+      className="max-w-lg mx-auto py-8 sm:py-16 px-2 sm:px-0"
     >
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 sm:mb-10">
         <motion.div
           animate={{ rotate: currentStep === 'done' ? 0 : 360 }}
           transition={{ duration: 2, repeat: currentStep === 'done' ? 0 : Infinity, ease: 'linear' }}

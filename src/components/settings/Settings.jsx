@@ -65,7 +65,7 @@ export default function Settings() {
       transition={{ duration: 0.5 }}
       className="max-w-2xl"
     >
-      <h1 className="font-heading font-bold text-3xl text-white mb-8 flex items-center gap-3">
+      <h1 className="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 sm:mb-8 flex items-center gap-3">
         <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-zinc-500" />
         Settings
       </h1>
@@ -73,7 +73,7 @@ export default function Settings() {
       {/* Profile Card */}
       <section className="glass-card mb-6 overflow-hidden">
         {/* Banner with avatar + info inside */}
-        <div className="relative overflow-hidden px-6 pt-6 pb-8">
+        <div className="relative overflow-hidden px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-8">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-violet-500/15 to-purple-500/10" />
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(129,140,248,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(167,139,250,0.1) 0%, transparent 50%)',
@@ -86,21 +86,21 @@ export default function Settings() {
             <rect width="100%" height="100%" fill="url(#profile-dots)" />
           </svg>
 
-          <div className="relative flex items-center gap-4">
+          <div className="relative flex items-center gap-3 sm:gap-4">
             {user?.photoURL ? (
               <img
                 src={user.photoURL}
                 alt=""
-                className="w-20 h-20 rounded-2xl border-2 border-white/10 shadow-lg"
+                className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl border-2 border-white/10 shadow-lg"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <div className="w-20 h-20 rounded-2xl border-2 border-white/10 bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-2xl text-white font-bold shadow-lg">
+              <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl border-2 border-white/10 bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-xl sm:text-2xl text-white font-bold shadow-lg">
                 {user?.displayName?.[0]}
               </div>
             )}
             <div>
-              <h2 className="font-heading font-bold text-xl text-white">{user?.displayName}</h2>
+              <h2 className="font-heading font-bold text-lg sm:text-xl text-white">{user?.displayName}</h2>
               <div className="flex items-center gap-1.5 text-sm text-zinc-300/70 mt-0.5">
                 <Mail size={13} />
                 {user?.email}
@@ -110,8 +110,8 @@ export default function Settings() {
         </div>
 
         {/* Account stats */}
-        <div className="px-6 pb-6 pt-4">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-3 sm:pt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
             {memberSince && (
               <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
                 <Calendar size={15} className="text-indigo-400 mx-auto mb-1.5" />
@@ -134,7 +134,7 @@ export default function Settings() {
       </section>
 
       {/* Preferences */}
-      <section className="glass-card p-6 mb-6">
+      <section className="glass-card p-4 sm:p-6 mb-6">
         <h2 className="font-heading font-semibold text-lg text-white mb-4">Preferences</h2>
 
         <div className="space-y-4">
@@ -151,12 +151,12 @@ export default function Settings() {
             </select>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="text-sm text-white">Dark Mode</div>
               <div className="text-xs text-zinc-500">Coming soon</div>
             </div>
-            <button disabled className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-zinc-500 cursor-not-allowed">
+            <button disabled className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-zinc-500 cursor-not-allowed w-fit">
               <Moon size={15} />
               Dark Only
             </button>
@@ -165,14 +165,14 @@ export default function Settings() {
       </section>
 
       {/* Danger Zone */}
-      <section className="glass-card p-6 mb-6 border-red-500/10">
+      <section className="glass-card p-4 sm:p-6 mb-6 border-red-500/10">
         <h2 className="font-heading font-semibold text-lg text-red-400 mb-4">Danger Zone</h2>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="text-sm text-white">Delete All Data</div>
             <div className="text-xs text-zinc-500 leading-relaxed">Permanently remove all distills and collections</div>
           </div>
-          <button onClick={() => setConfirmDeleteAll(true)} className="btn-danger flex items-center gap-2 text-sm">
+          <button onClick={() => setConfirmDeleteAll(true)} className="btn-danger flex items-center gap-2 text-sm flex-shrink-0 w-fit">
             <Trash2 size={15} />
             Delete All
           </button>
@@ -180,7 +180,7 @@ export default function Settings() {
       </section>
 
       {/* Account */}
-      <section className="glass-card p-6">
+      <section className="glass-card p-4 sm:p-6">
         <button onClick={handleLogout} className="btn-secondary flex items-center gap-2">
           <LogOut size={16} />
           Sign Out

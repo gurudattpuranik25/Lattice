@@ -31,19 +31,19 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="how-it-works" className="py-16 sm:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="font-heading font-bold text-3xl md:text-4xl text-center mb-16"
+          className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10 sm:mb-16"
         >
           How Lattice Works
         </motion.h2>
 
-        <div className="flex flex-col md:flex-row items-stretch gap-6">
+        <div className="flex flex-col md:flex-row items-stretch gap-4 sm:gap-6">
           {steps.map((step, index) => (
             <React.Fragment key={step.title}>
               <motion.div
@@ -51,7 +51,7 @@ export default function HowItWorks() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="glass-card glass-card-hover p-8 text-center group flex-1"
+                className="glass-card glass-card-hover p-6 sm:p-8 text-center group flex-1"
               >
                 {/* Numbered badge */}
                 <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${step.gradient} flex items-center justify-center mx-auto mb-5 text-sm font-bold text-white`}>

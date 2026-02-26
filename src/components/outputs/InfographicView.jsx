@@ -250,7 +250,7 @@ export default function InfographicView({ data }) {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="relative rounded-2xl p-8 overflow-hidden"
+          className="relative rounded-2xl p-5 sm:p-8 overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(167,139,250,0.08) 100%)',
             border: '1px solid rgba(129,140,248,0.2)',

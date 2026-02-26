@@ -54,16 +54,16 @@ export default function Library() {
       className="relative"
     >
       {/* Background glow */}
-      <div className="absolute -top-10 right-10 w-[350px] h-[250px] bg-purple-500/[0.03] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-60 -left-10 w-[250px] h-[200px] bg-indigo-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-10 right-10 w-[200px] sm:w-[350px] h-[150px] sm:h-[250px] bg-purple-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-60 -left-10 w-[150px] sm:w-[250px] h-[120px] sm:h-[200px] bg-indigo-500/[0.03] rounded-full blur-3xl pointer-events-none" />
 
-      <div className="flex items-center justify-between mb-8 relative">
-        <h1 className="font-heading font-bold text-3xl text-white flex items-center gap-3">
+      <div className="flex items-center justify-between mb-6 sm:mb-8 relative">
+        <h1 className="font-heading font-bold text-2xl sm:text-3xl text-white flex items-center gap-3">
           <span className="w-1.5 h-7 rounded-full bg-gradient-to-b from-indigo-400 to-purple-500" />
           Library
         </h1>
-        <button onClick={() => navigate('/dashboard/new')} className="btn-primary flex items-center gap-2 text-sm">
-          <Plus size={16} /> New Distill
+        <button onClick={() => navigate('/dashboard/new')} className="btn-primary flex items-center gap-2 text-sm px-4 py-2 sm:px-6 sm:py-3">
+          <Plus size={16} /> <span className="hidden sm:inline">New Distill</span><span className="sm:hidden">New</span>
         </button>
       </div>
 

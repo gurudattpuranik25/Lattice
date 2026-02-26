@@ -303,24 +303,24 @@ export default function DistillView() {
     return (
       <div>
         {/* Top bar skeleton */}
-        <div className="flex items-center gap-4 mb-8">
-          <div className="shimmer w-10 h-10 rounded-xl" />
-          <div className="shimmer h-7 w-64 rounded-lg" />
-          <div className="shimmer h-6 w-20 rounded-md ml-2" />
-          <div className="flex-1" />
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="shimmer w-10 h-10 rounded-xl flex-shrink-0" />
+            <div className="shimmer h-7 w-48 sm:w-64 rounded-lg" />
+          </div>
           <div className="flex gap-2">
             <div className="shimmer h-9 w-24 rounded-xl" />
             <div className="shimmer h-9 w-28 rounded-xl" />
           </div>
         </div>
         {/* Tabs skeleton */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-2 mb-6 sm:mb-8 overflow-hidden">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="shimmer h-10 rounded-xl" style={{ width: `${80 + Math.random() * 40}px` }} />
+            <div key={i} className="shimmer h-10 rounded-xl flex-shrink-0" style={{ width: `${70 + Math.random() * 30}px` }} />
           ))}
         </div>
         {/* Content skeleton */}
-        <div className="shimmer h-[500px] rounded-2xl" />
+        <div className="shimmer h-[300px] sm:h-[500px] rounded-2xl" />
       </div>
     );
   }
@@ -366,12 +366,12 @@ export default function DistillView() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
           <ExportButton targetRef={outputRef} filename={distill.title} textContent={JSON.stringify(outputData, null, 2)} />
           <SaveToCollectionButton distill={distill} distillId={id} onUpdate={handleCollectionUpdate} />
           <button onClick={handleRegenerate} disabled={generating} className="btn-ghost flex items-center gap-1.5 text-sm">
             <RefreshCw size={15} className={generating ? 'animate-spin' : ''} />
-            Regenerate
+            <span className="hidden sm:inline">Regenerate</span>
           </button>
           <button onClick={() => setConfirmDeleteOpen(true)} className="btn-danger text-sm px-3 py-2">
             <Trash2 size={15} />
@@ -380,7 +380,7 @@ export default function DistillView() {
       </div>
 
       {/* Format Tabs */}
-      <div className="flex gap-1 mb-8 overflow-x-auto pb-2 relative">
+      <div className="flex gap-1 mb-6 sm:mb-8 overflow-x-auto pb-2 relative scrollbar-hide">
         {formatKeys.map(key => {
           const Icon = formatIcons[key];
           const isActive = activeFormat === key;
@@ -388,7 +388,7 @@ export default function DistillView() {
             <button
               key={key}
               onClick={() => handleFormatSwitch(key)}
-              className={`relative px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors duration-200 flex items-center gap-2 ${
+              className={`relative px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors duration-200 flex items-center gap-1.5 sm:gap-2 ${
                 isActive
                   ? 'text-indigo-300'
                   : 'text-zinc-400 hover:text-white'

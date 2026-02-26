@@ -113,8 +113,8 @@ function DemoSection() {
   const OutputPreview = outputPreviews[activeIndex];
 
   return (
-    <section className="pb-24">
-      <div className="max-w-5xl mx-auto px-6">
+    <section className="pb-16 sm:pb-24">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -138,7 +138,7 @@ function DemoSection() {
             <span className="ml-3 text-xs text-zinc-500 font-mono">lattice</span>
           </div>
 
-          <div className="p-8 md:p-12">
+          <div className="p-5 sm:p-8 md:p-12">
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-6">
               {/* Input side */}
               <div className="flex-1 w-full">
@@ -248,14 +248,14 @@ export default function LandingPage() {
       <StatsSection />
 
       {/* Final CTA Section */}
-      <section className="py-24">
-        <div className="max-w-3xl mx-auto px-6">
+      <section className="py-16 sm:py-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="gradient-border glass-card p-12 md:p-16 text-center relative overflow-hidden"
+            className="gradient-border glass-card p-8 sm:p-12 md:p-16 text-center relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-indigo-500/5 pointer-events-none" />
 
@@ -268,15 +268,15 @@ export default function LandingPage() {
             <FloatingDot className="top-1/3 right-6" delay={1.2} />
 
             <div className="relative z-10">
-              <h2 className="font-heading font-bold text-3xl md:text-4xl mb-4">
+              <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl mb-4">
                 Start understanding faster
               </h2>
-              <p className="text-zinc-400 text-lg mb-8">
+              <p className="text-zinc-400 text-base sm:text-lg mb-6 sm:mb-8">
                 Your next PDF, lecture, or article is waiting to be distilled.
               </p>
               <button
                 onClick={handleGetStarted}
-                className="btn-primary shimmer-btn text-lg px-12 py-4 mb-4"
+                className="btn-primary shimmer-btn text-base sm:text-lg px-8 sm:px-12 py-3 sm:py-4 mb-4"
               >
                 Get Started Free
               </button>

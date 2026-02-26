@@ -143,18 +143,29 @@
     50% { border-color: rgba(129, 140, 248, 0.35); }
   }
 
-  /* Dashboard text scaling — increases font sizes across all app pages (not landing) */
-  .text-scaled {
-    font-size: 106%;
+  /* Hide scrollbar for horizontally scrollable tabs */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
-  .text-scaled .text-xs { font-size: 0.8125rem; line-height: 1.375rem; }
-  .text-scaled .text-sm { font-size: 0.9375rem; line-height: 1.5rem; }
-  .text-scaled .text-base { font-size: 1.0625rem; line-height: 1.75rem; }
-  .text-scaled .text-lg { font-size: 1.1875rem; line-height: 1.875rem; }
-  .text-scaled .text-xl { font-size: 1.3125rem; line-height: 2rem; }
-  .text-scaled .text-2xl { font-size: 1.625rem; line-height: 2.25rem; }
-  .text-scaled .text-3xl { font-size: 2rem; line-height: 2.5rem; }
+  /* Dashboard text scaling — increases font sizes on tablets/desktop only */
+  @media (min-width: 640px) {
+    .text-scaled {
+      font-size: 106%;
+    }
+
+    .text-scaled .text-xs { font-size: 0.8125rem; line-height: 1.375rem; }
+    .text-scaled .text-sm { font-size: 0.9375rem; line-height: 1.5rem; }
+    .text-scaled .text-base { font-size: 1.0625rem; line-height: 1.75rem; }
+    .text-scaled .text-lg { font-size: 1.1875rem; line-height: 1.875rem; }
+    .text-scaled .text-xl { font-size: 1.3125rem; line-height: 2rem; }
+    .text-scaled .text-2xl { font-size: 1.625rem; line-height: 2.25rem; }
+    .text-scaled .text-3xl { font-size: 2rem; line-height: 2.5rem; }
+  }
 
   /* Landing page animations */
   .btn-glow {

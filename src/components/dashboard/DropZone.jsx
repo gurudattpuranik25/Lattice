@@ -54,7 +54,7 @@ export default function DropZone({ onFileSelect, onUrlSubmit }) {
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative rounded-2xl border-2 border-dashed p-12 text-center cursor-pointer transition-all duration-300 ${
+        className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-12 text-center cursor-pointer transition-all duration-300 ${
           isDragging
             ? 'border-indigo-400 bg-indigo-500/5'
             : 'border-zinc-700 hover:border-indigo-500/40 hover:bg-white/[0.02]'
@@ -96,16 +96,16 @@ export default function DropZone({ onFileSelect, onUrlSubmit }) {
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
           <Upload
-            size={40}
-            className={`mx-auto mb-4 transition-colors duration-300 ${
+            size={32}
+            className={`mx-auto mb-3 sm:mb-4 transition-colors duration-300 ${
               isDragging ? 'text-indigo-400' : 'text-indigo-400/50'
             }`}
           />
         </motion.div>
-        <h3 className="font-heading font-semibold text-lg text-white mb-1">
+        <h3 className="font-heading font-semibold text-base sm:text-lg text-white mb-1">
           Drop a file, paste a URL, or click to upload
         </h3>
-        <p className="text-sm text-zinc-500 mb-5">
+        <p className="text-xs sm:text-sm text-zinc-500 mb-4 sm:mb-5">
           Supports PDF, YouTube, Word docs, and article links
         </p>
 
@@ -114,7 +114,7 @@ export default function DropZone({ onFileSelect, onUrlSubmit }) {
           initial={false}
           animate={{ opacity: isHovering || isDragging ? 1 : 0, y: isHovering || isDragging ? 0 : 6 }}
           transition={{ duration: 0.25 }}
-          className="flex items-center justify-center gap-5"
+          className="hidden sm:flex items-center justify-center gap-5"
         >
           {fileTypeHints.map((hint) => (
             <div key={hint.label} className="flex items-center gap-1.5">

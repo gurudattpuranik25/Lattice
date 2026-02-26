@@ -41,12 +41,12 @@ function StatCard({ stat, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`glass-card p-8 text-center group hover:border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${stat.glow}`}
+      className={`glass-card p-6 sm:p-8 text-center group hover:border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${stat.glow}`}
     >
       <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
         <Icon size={22} className="text-zinc-400" />
       </div>
-      <div className={`font-mono font-bold text-4xl md:text-5xl mb-2 bg-gradient-to-b ${stat.gradient} bg-clip-text text-transparent`}>
+      <div className={`font-mono font-bold text-3xl sm:text-4xl md:text-5xl mb-2 bg-gradient-to-b ${stat.gradient} bg-clip-text text-transparent`}>
         {isNumber ? count : stat.display}{stat.suffix}
       </div>
       <div className="text-zinc-400 text-sm">{stat.label}</div>
@@ -56,9 +56,9 @@ function StatCard({ stat, index }) {
 
 export default function StatsSection() {
   return (
-    <section id="stats" className="py-24">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section id="stats" className="py-16 sm:py-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {stats.map((stat, index) => (
             <StatCard key={stat.label} stat={stat} index={index} />
           ))}

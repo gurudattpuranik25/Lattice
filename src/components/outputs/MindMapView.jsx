@@ -299,7 +299,7 @@ export default function MindMapView({ data }) {
   }
 
   return (
-    <div className="w-full h-[700px] rounded-2xl overflow-hidden border border-white/[0.06] relative"
+    <div className="w-full h-[400px] sm:h-[550px] lg:h-[700px] rounded-2xl overflow-hidden border border-white/[0.06] relative"
       style={{ background: '#0A0A0F' }}
     >
       <ReactFlow

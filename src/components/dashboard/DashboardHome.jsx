@@ -30,14 +30,14 @@ export default function DashboardHome() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-10 relative"
+      className="space-y-8 sm:space-y-10 relative"
     >
-      {/* Subtle background glow */}
-      <div className="absolute -top-20 -right-20 w-[400px] h-[300px] bg-indigo-500/[0.04] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-20 w-[300px] h-[250px] bg-violet-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+      {/* Subtle background glow — scaled down on mobile */}
+      <div className="absolute -top-20 -right-20 w-[200px] sm:w-[400px] h-[150px] sm:h-[300px] bg-indigo-500/[0.04] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-40 -left-20 w-[150px] sm:w-[300px] h-[125px] sm:h-[250px] bg-violet-500/[0.03] rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative">
-        <h1 className="font-heading font-bold text-3xl text-white mb-1">
+        <h1 className="font-heading font-bold text-2xl sm:text-3xl text-white mb-1">
           {getGreeting()}, <span className="gradient-text">{firstName}</span>
         </h1>
         <p className="text-zinc-400 text-sm flex items-center gap-1.5">

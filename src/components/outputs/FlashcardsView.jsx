@@ -129,7 +129,7 @@ function StudyCard({ card, colorScheme, index, total }) {
       >
         {/* Front */}
         <div
-          className="absolute inset-0 rounded-3xl p-8 flex flex-col justify-between overflow-hidden"
+          className="absolute inset-0 rounded-3xl p-5 sm:p-8 flex flex-col justify-between overflow-hidden"
           style={{
             backfaceVisibility: 'hidden',
             background: colorScheme.bg,
@@ -164,7 +164,7 @@ function StudyCard({ card, colorScheme, index, total }) {
 
         {/* Back */}
         <div
-          className="absolute inset-0 rounded-3xl p-8 flex flex-col justify-between"
+          className="absolute inset-0 rounded-3xl p-5 sm:p-8 flex flex-col justify-between"
           style={{
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
@@ -380,7 +380,7 @@ export default function FlashcardsView({ data }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
         {cards.map((card, i) => (
           <motion.div
             key={card.id}
