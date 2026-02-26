@@ -159,7 +159,15 @@ function ProcessStep({ step, index, total }) {
 // --- Main Component ---
 export default function InfographicView({ data }) {
   if (!data) {
-    return <div className="text-center text-zinc-500 py-20">No infographic data available.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3">
+        <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center">
+          <TrendingUp size={22} className="text-cyan-400" />
+        </div>
+        <p className="text-zinc-400 font-medium text-sm">No infographic data available</p>
+        <p className="text-zinc-600 text-xs">Generate this format to see a visual infographic summary</p>
+      </div>
+    );
   }
 
   return (

@@ -61,6 +61,17 @@ export async function updateDistill(userId, distillId, data) {
 
 export async function deleteDistill(userId, distillId) {
   const distillRef = doc(db, 'users', userId, 'distills', distillId);
+  const snapshot = await getDoc(distillRef);
+
+  if (snapshot.exists()) {
+    const data = snapshot.data();
+    // Decrement collection count if distill belonged to one
+    if (data.collectionId) {
+      const collRef = doc(db, 'users', userId, 'collections', data.collectionId);
+      await updateDoc(collRef, { distillCount: increment(-1) }).catch(() => {});
+    }
+  }
+
   await deleteDoc(distillRef);
 }
 
@@ -99,6 +110,15 @@ export async function createCollection(userId, name, color = '#818CF8') {
 }
 
 export async function deleteCollection(userId, collectionId) {
+  // Delete all distills that belonged to this collection
+  const distillsRef = collection(db, 'users', userId, 'distills');
+  const q = query(distillsRef, where('collectionId', '==', collectionId));
+  const snapshot = await getDocs(q);
+  const deletes = snapshot.docs.map(d =>
+    deleteDoc(doc(db, 'users', userId, 'distills', d.id))
+  );
+  await Promise.all(deletes);
+
   const collRef = doc(db, 'users', userId, 'collections', collectionId);
   await deleteDoc(collRef);
 }

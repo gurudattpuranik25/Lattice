@@ -231,7 +231,15 @@ export default function FlashcardsView({ data }) {
   const [known, setKnown] = useState(new Set());
 
   if (!cards.length) {
-    return <div className="text-center text-zinc-500 py-20">No flashcard data available.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3">
+        <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center">
+          <LayoutGrid size={22} className="text-purple-400" />
+        </div>
+        <p className="text-zinc-400 font-medium text-sm">No flashcard data available</p>
+        <p className="text-zinc-600 text-xs">Generate this format to create study flashcards</p>
+      </div>
+    );
   }
 
   const getColor = (i) => cardColors[i % cardColors.length];

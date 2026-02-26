@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { FileText, Youtube, Globe, FileType, Type, X, AlertTriangle, Loader2 } from 'lucide-react';
+import { FileText, Youtube, Globe, FileType, Type, X, AlertTriangle, Loader2, Upload, Sparkles, Eye, Check } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { extractContent, detectSourceType, extractYouTubeId } from '../../services/contentExtractor';
 import { processWithClaude } from '../../services/claudeService';
@@ -11,6 +11,79 @@ import { getTextPreview, formatFileSize } from '../../utils/textTruncator';
 import DropZone from '../dashboard/DropZone';
 import FormatSelector from './FormatSelector';
 import ProcessingScreen from './ProcessingScreen';
+
+const stepperSteps = [
+  { num: 1, label: 'Upload', icon: Upload },
+  { num: 2, label: 'Format', icon: Sparkles },
+  { num: 3, label: 'Generate', icon: Eye },
+];
+
+function Stepper({ currentStep }) {
+  const stepNum = typeof currentStep === 'number' ? currentStep : 1;
+
+  return (
+    <div className="flex items-center justify-center mb-10">
+      {stepperSteps.map((s, i) => {
+        const isCompleted = stepNum > s.num;
+        const isActive = stepNum === s.num;
+        const Icon = s.icon;
+
+        return (
+          <div key={s.num} className="flex items-center">
+            {/* Step circle */}
+            <div className="flex flex-col items-center">
+              <motion.div
+                animate={{
+                  scale: isActive ? 1.05 : 1,
+                  backgroundColor: isCompleted
+                    ? 'rgba(52, 211, 153, 0.15)'
+                    : isActive
+                    ? 'rgba(129, 140, 248, 0.15)'
+                    : 'rgba(39, 39, 42, 1)',
+                }}
+                transition={{ duration: 0.3 }}
+                className="w-10 h-10 rounded-full flex items-center justify-center relative"
+              >
+                {isCompleted ? (
+                  <Check size={18} className="text-emerald-400" />
+                ) : (
+                  <Icon size={18} className={isActive ? 'text-indigo-400' : 'text-zinc-600'} />
+                )}
+                {isActive && (
+                  <motion.div
+                    className="absolute inset-0 rounded-full border-2 border-indigo-400/30"
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                )}
+              </motion.div>
+              <span className={`text-xs mt-1.5 font-medium transition-colors duration-300 ${
+                isCompleted ? 'text-emerald-400' : isActive ? 'text-indigo-300' : 'text-zinc-600'
+              }`}>
+                {s.label}
+              </span>
+            </div>
+
+            {/* Connector line */}
+            {i < stepperSteps.length - 1 && (
+              <div className="w-16 sm:w-24 h-[2px] mx-2 mb-5 rounded-full overflow-hidden bg-zinc-800">
+                <motion.div
+                  className="h-full rounded-full"
+                  initial={{ width: '0%' }}
+                  animate={{
+                    width: isCompleted ? '100%' : '0%',
+                    backgroundColor: isCompleted ? '#34D399' : '#818CF8',
+                  }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                />
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function NewDistill() {
   const { user } = useAuth();
@@ -145,6 +218,9 @@ export default function NewDistill() {
       transition={{ duration: 0.5 }}
       className="max-w-4xl mx-auto py-8"
     >
+      {/* Stepper */}
+      <Stepper currentStep={typeof step === 'number' ? step : 1} />
+
       {step === 1 && (
         <div className="space-y-6 relative">
           {/* Extracting overlay */}
@@ -308,6 +384,7 @@ export default function NewDistill() {
         <ProcessingScreen
           currentStep={processingStep}
           format={selectedFormat}
+          sourceType={sourceType}
           error={error}
           onRetry={handleRetry}
         />

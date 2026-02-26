@@ -224,7 +224,15 @@ const cardRenderers = {
 
 export default function KnowledgeCardsView({ data }) {
   if (!data?.cards?.length) {
-    return <div className="text-center text-zinc-500 py-20">No knowledge cards data available.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3">
+        <div className="w-12 h-12 rounded-full bg-teal-500/10 flex items-center justify-center">
+          <Lightbulb size={22} className="text-teal-400" />
+        </div>
+        <p className="text-zinc-400 font-medium text-sm">No knowledge cards data available</p>
+        <p className="text-zinc-600 text-xs">Generate this format to see visual knowledge cards</p>
+      </div>
+    );
   }
 
   return (

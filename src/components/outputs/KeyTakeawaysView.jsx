@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Zap } from 'lucide-react';
 
 const importanceColor = {
   1: 'bg-emerald-400',
@@ -28,7 +28,15 @@ export default function KeyTakeawaysView({ data }) {
   const [expanded, setExpanded] = useState({});
 
   if (!data?.takeaways?.length) {
-    return <div className="text-center text-zinc-500 py-20">No takeaway data available.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3">
+        <div className="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center">
+          <Zap size={22} className="text-rose-400" />
+        </div>
+        <p className="text-zinc-400 font-medium text-sm">No takeaway data available</p>
+        <p className="text-zinc-600 text-xs">Generate this format to extract key takeaways</p>
+      </div>
+    );
   }
 
   const sorted = [...data.takeaways].sort((a, b) => b.importance - a.importance);

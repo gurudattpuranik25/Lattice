@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, BookOpen } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useDistills } from '../../hooks/useDistills';
 import { formatRelativeDate } from '../../utils/formatDate';
 import { getSourceIcon, getSourceLabel, getFormatColor, getSourceColor } from '../../utils/sourceTypeDetector';
 import { FORMAT_NAMES } from '../../services/prompts';
 import { truncateText } from '../../utils/textTruncator';
 import DistillCard from '../dashboard/DistillCard';
+import EmptyState from '../shared/EmptyState';
 import LibraryFilters from './LibraryFilters';
 
 export default function Library() {
@@ -78,20 +79,13 @@ export default function Library() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-20">
-          <BookOpen size={48} className="text-indigo-500/30 mx-auto mb-4" />
-          <h3 className="font-heading font-semibold text-xl text-zinc-400 mb-2">
-            {distills.length === 0 ? 'Your library is empty' : 'No matching distills'}
-          </h3>
-          <p className="text-zinc-500 text-sm mb-6">
-            {distills.length === 0 ? 'Drop something in to get started.' : 'Try adjusting your search or filters.'}
-          </p>
-          {distills.length === 0 && (
-            <button onClick={() => navigate('/dashboard/new')} className="btn-primary">
-              Create Your First Distill
-            </button>
-          )}
-        </div>
+        <EmptyState
+          illustrationType="library"
+          title={distills.length === 0 ? 'Your library is empty' : 'No matching distills'}
+          description={distills.length === 0 ? 'Drop something in to get started.' : 'Try adjusting your search or filters.'}
+          actionLabel={distills.length === 0 ? 'Create Your First Distill' : undefined}
+          actionPath={distills.length === 0 ? '/dashboard/new' : undefined}
+        />
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map((distill, index) => (

@@ -283,7 +283,19 @@ export default function MindMapView({ data }) {
   const [edges, , onEdgesChange] = useEdgesState(layoutedEdges);
 
   if (!data?.nodes?.length) {
-    return <div className="text-center text-zinc-500 py-20">No mind map data available.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3">
+        <div className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#818CF8" strokeWidth="1.5" strokeLinecap="round">
+            <circle cx="12" cy="12" r="3" /><line x1="12" y1="12" x2="4" y2="6" /><line x1="12" y1="12" x2="20" y2="6" />
+            <line x1="12" y1="12" x2="4" y2="18" /><line x1="12" y1="12" x2="20" y2="18" />
+            <circle cx="4" cy="6" r="2" /><circle cx="20" cy="6" r="2" /><circle cx="4" cy="18" r="2" /><circle cx="20" cy="18" r="2" />
+          </svg>
+        </div>
+        <p className="text-zinc-400 font-medium text-sm">No mind map data available</p>
+        <p className="text-zinc-600 text-xs">Generate this format to see your content as a mind map</p>
+      </div>
+    );
   }
 
   return (
@@ -307,7 +319,8 @@ export default function MindMapView({ data }) {
           style: { strokeWidth: 2 },
         }}
       >
-        <Background color="#1E1E28" gap={30} size={1.5} variant="dots" />
+        <Background color="#1a1a24" gap={24} size={1} variant="dots" />
+        <Background color="#15151e" gap={120} size={0.5} variant="lines" />
         <Controls className="!rounded-xl !border-white/5" />
         <MiniMap
           nodeColor={(node) => {

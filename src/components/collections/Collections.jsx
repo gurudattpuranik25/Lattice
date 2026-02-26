@@ -7,6 +7,8 @@ import { useCollections } from '../../hooks/useCollections';
 import { useDistills } from '../../hooks/useDistills';
 import { createCollection, deleteCollection } from '../../services/firestoreService';
 import DistillCard from '../dashboard/DistillCard';
+import EmptyState from '../shared/EmptyState';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import CreateCollectionModal from './CreateCollectionModal';
 
 export default function Collections() {
@@ -15,6 +17,7 @@ export default function Collections() {
   const { distills } = useDistills();
   const [selectedId, setSelectedId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleCreate = async (name, color) => {
     try {
@@ -26,7 +29,6 @@ export default function Collections() {
   };
 
   const handleDelete = async (collectionId) => {
-    if (!window.confirm('Delete this collection?')) return;
     try {
       await deleteCollection(user.uid, collectionId);
       if (selectedId === collectionId) setSelectedId(null);
@@ -81,7 +83,7 @@ export default function Collections() {
                 <span className="ml-auto text-xs text-zinc-600">{col.distillCount || 0}</span>
               </button>
               <button
-                onClick={() => handleDelete(col.id)}
+                onClick={() => setDeleteTarget(col)}
                 className="p-1 text-zinc-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
               >
                 <Trash2 size={14} />
@@ -101,10 +103,11 @@ export default function Collections() {
         {/* Right panel */}
         <div className="flex-1">
           {filteredDistills.length === 0 ? (
-            <div className="text-center py-16">
-              <FolderOpen size={40} className="text-zinc-700 mx-auto mb-3" />
-              <p className="text-zinc-500 text-sm">No distills in this collection</p>
-            </div>
+            <EmptyState
+              illustrationType="collection"
+              title="No distills here yet"
+              description={selectedId ? 'Save distills to this collection from the distill view.' : 'Uncategorized distills will appear here.'}
+            />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredDistills.map((distill, i) => (
@@ -119,6 +122,16 @@ export default function Collections() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleCreate}
+      />
+
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={() => handleDelete(deleteTarget?.id)}
+        title={`Delete "${deleteTarget?.name}"?`}
+        description="All distills in this collection will be permanently deleted. This cannot be undone."
+        confirmLabel="Delete Collection"
+        variant="danger"
       />
     </motion.div>
   );

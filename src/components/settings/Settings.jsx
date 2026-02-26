@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { getUserSettings, updateUserSettings } from '../../services/firestoreService';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import { FORMAT_NAMES } from '../../services/prompts';
 
 export default function Settings() {
@@ -12,6 +13,7 @@ export default function Settings() {
   const navigate = useNavigate();
   const [settings, setSettings] = useState({ defaultFormat: 'keyTakeaways' });
   const [loading, setLoading] = useState(true);
+  const [confirmDeleteAll, setConfirmDeleteAll] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -34,7 +36,6 @@ export default function Settings() {
   };
 
   const handleDeleteAll = () => {
-    if (!window.confirm('Are you sure you want to delete ALL your data? This cannot be undone.')) return;
     toast.error('This feature is coming soon.');
   };
 
@@ -109,7 +110,7 @@ export default function Settings() {
             <div className="text-sm text-white">Delete All Data</div>
             <div className="text-xs text-zinc-500">Permanently remove all distills and collections</div>
           </div>
-          <button onClick={handleDeleteAll} className="btn-danger flex items-center gap-2 text-sm">
+          <button onClick={() => setConfirmDeleteAll(true)} className="btn-danger flex items-center gap-2 text-sm">
             <Trash2 size={15} />
             Delete All
           </button>
@@ -123,6 +124,16 @@ export default function Settings() {
           Sign Out
         </button>
       </section>
+
+      <ConfirmDialog
+        isOpen={confirmDeleteAll}
+        onClose={() => setConfirmDeleteAll(false)}
+        onConfirm={handleDeleteAll}
+        title="Delete all data?"
+        description="This will permanently remove all your distills, collections, and settings. This cannot be undone."
+        confirmLabel="Delete Everything"
+        variant="danger"
+      />
     </motion.div>
   );
 }

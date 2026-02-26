@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, FolderPlus, Trash2, RefreshCw, Loader2, ChevronDown, Check, Plus } from 'lucide-react';
+import { ArrowLeft, FolderPlus, Trash2, RefreshCw, Loader2, ChevronDown, Check, Plus, GitBranch, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../hooks/useAuth';
 import { useCollections } from '../../hooks/useCollections';
+import ConfirmDialog from '../shared/ConfirmDialog';
 import { getDistill, updateDistill, deleteDistill, addDistillToCollection, removeDistillFromCollection, createCollection } from '../../services/firestoreService';
 import { processWithClaude } from '../../services/claudeService';
 import { getSourceLabel, getFormatColor } from '../../utils/sourceTypeDetector';
@@ -28,6 +29,15 @@ const formatComponents = {
 };
 
 const formatKeys = ['mindMap', 'timeline', 'flashcards', 'infographic', 'keyTakeaways', 'knowledgeCards'];
+
+const formatIcons = {
+  mindMap: GitBranch,
+  timeline: Clock,
+  flashcards: Layers,
+  infographic: BarChart3,
+  keyTakeaways: Zap,
+  knowledgeCards: LayoutGrid,
+};
 
 const presetColors = ['#818CF8', '#34D399', '#FB923C', '#F472B6', '#38BDF8', '#FBBF24'];
 
@@ -209,6 +219,7 @@ export default function DistillView() {
   const [generating, setGenerating] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleInput, setTitleInput] = useState('');
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   useEffect(() => {
     if (!user || !id) return;
@@ -264,7 +275,6 @@ export default function DistillView() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this distill?')) return;
     try {
       await deleteDistill(user.uid, id);
       toast.success('Deleted');
@@ -342,30 +352,44 @@ export default function DistillView() {
             <RefreshCw size={15} className={generating ? 'animate-spin' : ''} />
             Regenerate
           </button>
-          <button onClick={handleDelete} className="btn-danger text-sm px-3 py-2">
+          <button onClick={() => setConfirmDeleteOpen(true)} className="btn-danger text-sm px-3 py-2">
             <Trash2 size={15} />
           </button>
         </div>
       </div>
 
       {/* Format Tabs */}
-      <div className="flex gap-1 mb-8 overflow-x-auto pb-2">
-        {formatKeys.map(key => (
-          <button
-            key={key}
-            onClick={() => handleFormatSwitch(key)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-              activeFormat === key
-                ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-                : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
-            }`}
-          >
-            {FORMAT_NAMES[key]}
-            {distill.outputs?.[key] && key !== activeFormat && (
-              <span className="ml-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-            )}
-          </button>
-        ))}
+      <div className="flex gap-1 mb-8 overflow-x-auto pb-2 relative">
+        {formatKeys.map(key => {
+          const Icon = formatIcons[key];
+          const isActive = activeFormat === key;
+          return (
+            <button
+              key={key}
+              onClick={() => handleFormatSwitch(key)}
+              className={`relative px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors duration-200 flex items-center gap-2 ${
+                isActive
+                  ? 'text-indigo-300'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <Icon size={15} className={isActive ? 'text-indigo-400' : ''} />
+              {FORMAT_NAMES[key]}
+              {distill.outputs?.[key] && !isActive && (
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+              )}
+              {isActive && (
+                <motion.div
+                  layoutId="activeFormatTab"
+                  className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-indigo-400"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+            </button>
+          );
+        })}
+        {/* Base line */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/5" />
       </div>
 
       {/* Output Display */}
@@ -384,14 +408,34 @@ export default function DistillView() {
             <OutputComponent data={outputData} />
           </Suspense>
         ) : (
-          <div className="text-center py-20">
-            <p className="text-zinc-500 mb-4">No {FORMAT_NAMES[activeFormat]} generated yet.</p>
-            <button onClick={() => handleFormatSwitch(activeFormat)} className="btn-primary">
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            {(() => {
+              const Icon = formatIcons[activeFormat];
+              return (
+                <div className="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
+                  <Icon size={24} className="text-zinc-500" />
+                </div>
+              );
+            })()}
+            <div className="text-center">
+              <p className="text-zinc-400 font-medium text-sm mb-1">No {FORMAT_NAMES[activeFormat]} generated yet</p>
+              <p className="text-zinc-600 text-xs">Click below to generate this format from your content</p>
+            </div>
+            <button onClick={() => handleFormatSwitch(activeFormat)} className="btn-primary text-sm">
               Generate Now
             </button>
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        isOpen={confirmDeleteOpen}
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete this distill?"
+        description="This will permanently remove this distill and all its generated outputs. This cannot be undone."
+        confirmLabel="Delete Distill"
+      />
     </motion.div>
   );
 }
