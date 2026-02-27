@@ -215,14 +215,13 @@ export default function DistillView() {
   const outputRef = useRef(null);
 
   // Try reading from sessionStorage (written by NewDistill before navigating).
-  // This is a browser API — survives AnimatePresence remounts, React lifecycle, everything.
+  // Do NOT remove the item here — AnimatePresence mode="wait" mounts this
+  // component inside the EXITING motion.div first (Outlet renders new route
+  // during exit). If we delete here, the real mount after exit finds nothing.
   const [distill, setDistill] = useState(() => {
     try {
       const raw = sessionStorage.getItem(`distill:${id}`);
-      if (raw) {
-        sessionStorage.removeItem(`distill:${id}`);
-        return JSON.parse(raw);
-      }
+      if (raw) return JSON.parse(raw);
     } catch { /* ignore parse errors */ }
     return null;
   });
@@ -273,6 +272,13 @@ export default function DistillView() {
     load();
     return () => { cancelled = true; };
   }, [user, id]);
+
+  // Clean up sessionStorage after AnimatePresence exit/enter cycle completes
+  useEffect(() => {
+    if (!id) return;
+    const timer = setTimeout(() => sessionStorage.removeItem(`distill:${id}`), 3000);
+    return () => clearTimeout(timer);
+  }, [id]);
 
   const handleFormatSwitch = async (format) => {
     setActiveFormat(format);
