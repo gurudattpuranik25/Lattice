@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, FolderPlus, Trash2, RefreshCw, Loader2, ChevronDown, Check, Plus, StickyNote, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -212,20 +212,25 @@ export default function DistillView() {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const outputRef = useRef(null);
 
-  const [distill, setDistill] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [activeFormat, setActiveFormat] = useState(null);
+  const prefetched = location.state?.prefetchedDistill || null;
+
+  const [distill, setDistill] = useState(prefetched);
+  const [loading, setLoading] = useState(!prefetched);
+  const [activeFormat, setActiveFormat] = useState(prefetched?.outputFormat || null);
   const [generating, setGenerating] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
-  const [titleInput, setTitleInput] = useState('');
+  const [titleInput, setTitleInput] = useState(prefetched?.title || '');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   usePageTitle(distill ? `${distill.title} — ${FORMAT_NAMES[activeFormat] || ''}` : 'Loading...');
 
   useEffect(() => {
     if (!user || !id) return;
+    // Skip fetch if we already have prefetched data
+    if (prefetched) return;
     setLoading(true);
     getDistill(user.uid, id).then((data) => {
       if (data) {
