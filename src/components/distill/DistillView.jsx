@@ -221,24 +221,51 @@ export default function DistillView() {
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleInput, setTitleInput] = useState('');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const notFoundTimer = useRef(null);
 
   usePageTitle(distill ? `${distill.title} — ${FORMAT_NAMES[activeFormat] || ''}` : 'Loading...');
 
   useEffect(() => {
     if (!user || !id) return;
     setLoading(true);
+
+    // Clear any pending not-found timer from a previous render
+    if (notFoundTimer.current) clearTimeout(notFoundTimer.current);
+
     const unsubscribe = subscribeToDistill(user.uid, id, (data) => {
       if (data) {
+        // Data arrived — cancel any pending not-found redirect
+        if (notFoundTimer.current) {
+          clearTimeout(notFoundTimer.current);
+          notFoundTimer.current = null;
+        }
         setDistill(data);
         setActiveFormat(prev => prev || data.outputFormat);
         setTitleInput(data.title);
-      } else {
-        toast.error('Distill not found');
-        navigate('/dashboard');
+        setLoading(false);
+      } else if (!notFoundTimer.current) {
+        // Document not found yet — wait before redirecting.
+        // onSnapshot fires with null when the doc doesn't exist YET
+        // (e.g. serverTimestamp hasn't resolved, or AnimatePresence
+        // caused a premature mount). Give it time to appear.
+        notFoundTimer.current = setTimeout(() => {
+          toast.error('Distill not found');
+          navigate('/dashboard');
+        }, 5000);
       }
+    }, (error) => {
+      console.error('Distill subscription error:', error);
+      toast.error('Failed to load distill');
       setLoading(false);
     });
-    return unsubscribe;
+
+    return () => {
+      unsubscribe();
+      if (notFoundTimer.current) {
+        clearTimeout(notFoundTimer.current);
+        notFoundTimer.current = null;
+      }
+    };
   }, [user, id]);
 
   const handleFormatSwitch = async (format) => {
