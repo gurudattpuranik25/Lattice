@@ -81,6 +81,13 @@ export async function getDistill(userId, distillId) {
   return snapshot.exists() ? { id: snapshot.id, ...snapshot.data() } : null;
 }
 
+export function subscribeToDistill(userId, distillId, callback) {
+  const distillRef = doc(db, 'users', userId, 'distills', distillId);
+  return onSnapshot(distillRef, (snapshot) => {
+    callback(snapshot.exists() ? { id: snapshot.id, ...snapshot.data() } : null);
+  });
+}
+
 export function subscribeToDistills(userId, callback, limitCount = 50) {
   const distillsRef = collection(db, 'users', userId, 'distills');
   const q = query(distillsRef, orderBy('createdAt', 'desc'), limit(limitCount));

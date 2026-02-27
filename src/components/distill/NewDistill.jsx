@@ -184,23 +184,19 @@ export default function NewDistill() {
       setProcessingStep('building');
       await new Promise(r => setTimeout(r, 800));
 
-      const distillData = {
+      const distillId = await createDistill(user.uid, {
         title: output.title || sourceInfo.fileName || 'Untitled',
         sourceType,
         sourceInfo,
         extractedTextPreview: getTextPreview(extractedText),
         outputFormat: format,
         outputs: { [format]: output },
-      };
-
-      const distillId = await createDistill(user.uid, distillData);
+      });
 
       setProcessingStep('done');
       await new Promise(r => setTimeout(r, 1000));
 
-      navigate(`/dashboard/distill/${distillId}`, {
-        state: { prefetchedDistill: { id: distillId, ...distillData } },
-      });
+      navigate(`/dashboard/distill/${distillId}`);
     } catch (err) {
       setError(err.message);
       toast.error(err.message);

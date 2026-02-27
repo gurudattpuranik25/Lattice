@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, FolderPlus, Trash2, RefreshCw, Loader2, ChevronDown, Check, Plus, StickyNote, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../hooks/useAuth';
 import { useCollections } from '../../hooks/useCollections';
 import ConfirmDialog from '../shared/ConfirmDialog';
-import { getDistill, updateDistill, deleteDistill, addDistillToCollection, removeDistillFromCollection, createCollection } from '../../services/firestoreService';
+import { subscribeToDistill, updateDistill, deleteDistill, addDistillToCollection, removeDistillFromCollection, createCollection } from '../../services/firestoreService';
 import { processWithClaude } from '../../services/claudeService';
 import { getSourceLabel, getFormatColor } from '../../utils/sourceTypeDetector';
 import { FORMAT_NAMES } from '../../services/prompts';
@@ -212,30 +212,25 @@ export default function DistillView() {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const outputRef = useRef(null);
 
-  const prefetched = location.state?.prefetchedDistill || null;
-
-  const [distill, setDistill] = useState(prefetched);
-  const [loading, setLoading] = useState(!prefetched);
-  const [activeFormat, setActiveFormat] = useState(prefetched?.outputFormat || null);
+  const [distill, setDistill] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [activeFormat, setActiveFormat] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
-  const [titleInput, setTitleInput] = useState(prefetched?.title || '');
+  const [titleInput, setTitleInput] = useState('');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   usePageTitle(distill ? `${distill.title} — ${FORMAT_NAMES[activeFormat] || ''}` : 'Loading...');
 
   useEffect(() => {
     if (!user || !id) return;
-    // Skip fetch if we already have prefetched data
-    if (prefetched) return;
     setLoading(true);
-    getDistill(user.uid, id).then((data) => {
+    const unsubscribe = subscribeToDistill(user.uid, id, (data) => {
       if (data) {
         setDistill(data);
-        setActiveFormat(data.outputFormat);
+        setActiveFormat(prev => prev || data.outputFormat);
         setTitleInput(data.title);
       } else {
         toast.error('Distill not found');
@@ -243,6 +238,7 @@ export default function DistillView() {
       }
       setLoading(false);
     });
+    return unsubscribe;
   }, [user, id]);
 
   const handleFormatSwitch = async (format) => {
