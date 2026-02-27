@@ -37,7 +37,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative pt-24 sm:pt-36 pb-16 sm:pb-24 overflow-hidden">
+    <section className="relative pt-28 sm:pt-40 pb-16 sm:pb-24 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-indigo-500/8 rounded-full blur-3xl" />

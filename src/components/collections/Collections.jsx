@@ -71,48 +71,61 @@ export default function Collections() {
       ) : (
       <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
         {/* Left panel — horizontal scroll on mobile, vertical sidebar on desktop */}
-        <div className="w-full lg:w-64 flex-shrink-0 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
-          <button
-            onClick={() => setSelectedId(null)}
-            className={`w-full lg:w-full flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
-              selectedId === null
-                ? 'bg-white/5 text-white border-l-[3px] border-indigo-400 pl-[13px]'
-                : 'text-zinc-400 hover:bg-white/5'
-            }`}
-          >
-            <FolderOpen size={16} />
-            Uncategorized
-            <span className="ml-auto text-xs text-zinc-600">
-              {distills.filter(d => !d.collectionId).length}
-            </span>
-          </button>
+        <div className="w-full lg:w-64 flex-shrink-0">
+          {/* Collection tabs */}
+          <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 scrollbar-hide">
+            <button
+              onClick={() => setSelectedId(null)}
+              className={`w-full lg:w-full flex-shrink-0 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                selectedId === null
+                  ? 'bg-white/5 text-white border-l-[3px] border-indigo-400 pl-[13px]'
+                  : 'text-zinc-400 hover:bg-white/5'
+              }`}
+            >
+              <FolderOpen size={16} />
+              Uncategorized
+              <span className="ml-auto text-xs text-zinc-600">
+                {distills.filter(d => !d.collectionId).length}
+              </span>
+            </button>
 
-          {collections.map(col => (
-            <div key={col.id} className="group flex items-center flex-shrink-0">
-              <button
-                onClick={() => setSelectedId(col.id)}
-                className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
-                  selectedId === col.id
-                    ? 'bg-white/5 text-white border-l-[3px] border-indigo-400 pl-[13px]'
-                    : 'text-zinc-400 hover:bg-white/5'
-                }`}
-              >
-                <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: col.color }} />
-                <span className="truncate">{col.name}</span>
-                <span className="ml-auto text-xs text-zinc-600">{col.distillCount || 0}</span>
-              </button>
-              <button
-                onClick={() => setDeleteTarget(col)}
-                className="p-1 text-zinc-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
-              >
-                <Trash2 size={14} />
-              </button>
-            </div>
-          ))}
+            {collections.map(col => (
+              <div key={col.id} className="group flex items-center flex-shrink-0">
+                <button
+                  onClick={() => setSelectedId(col.id)}
+                  className={`flex-1 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedId === col.id
+                      ? 'bg-white/5 text-white border-l-[3px] border-indigo-400 pl-[13px]'
+                      : 'text-zinc-400 hover:bg-white/5'
+                  }`}
+                >
+                  <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: col.color }} />
+                  <span className="truncate">{col.name}</span>
+                  <span className="ml-auto text-xs text-zinc-600">{col.distillCount || 0}</span>
+                </button>
+                <button
+                  onClick={() => setDeleteTarget(col)}
+                  className="p-1 text-zinc-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            ))}
 
+            {/* New Collection — inline on desktop */}
+            <button
+              onClick={() => setModalOpen(true)}
+              className="hidden lg:flex w-full flex-shrink-0 items-center gap-2 px-4 py-3 rounded-xl text-sm text-zinc-500 hover:text-indigo-400 hover:bg-white/5 whitespace-nowrap transition-all"
+            >
+              <Plus size={16} />
+              New Collection
+            </button>
+          </div>
+
+          {/* New Collection — separate row on mobile */}
           <button
             onClick={() => setModalOpen(true)}
-            className="w-full lg:w-full flex-shrink-0 flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-zinc-500 hover:text-indigo-400 hover:bg-white/5 whitespace-nowrap transition-all"
+            className="lg:hidden flex items-center gap-2 mt-2 px-4 py-3 rounded-xl text-sm text-zinc-500 hover:text-indigo-400 hover:bg-white/5 transition-all w-full"
           >
             <Plus size={16} />
             New Collection
