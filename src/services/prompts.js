@@ -1,30 +1,18 @@
-export const MIND_MAP_PROMPT = `You are a knowledge structuring AI. Given the following content, create a mind map structure. Return ONLY valid JSON with this exact structure, no markdown, no explanation:
+export const CORNELL_NOTES_PROMPT = `You are a study-notes AI. Given the following content, create Cornell-style notes. Return ONLY valid JSON with this exact structure, no markdown, no explanation:
 {
-  "title": "Main Topic Title",
-  "nodes": [
+  "title": "Notes Title",
+  "cues": [
     {
-      "id": "center",
-      "label": "Central Topic",
-      "type": "center"
-    },
-    {
-      "id": "branch-1",
-      "label": "Key Concept 1",
-      "type": "branch",
-      "parent": "center",
-      "children": [
-        {
-          "id": "leaf-1-1",
-          "label": "Detail or example",
-          "type": "leaf",
-          "parent": "branch-1"
-        }
-      ]
+      "id": "cue-1",
+      "keyword": "Short cue or question (2-5 words)",
+      "notes": "Detailed notes, explanation, or answer (2-4 sentences)",
+      "category": "definition"
     }
   ],
-  "summary": "One sentence summary of the entire content"
+  "summary": "2-3 sentence summary of the entire content",
+  "oneLiner": "The entire content in one sentence"
 }
-Create 4-7 main branches with 2-4 leaves each. Labels should be concise (3-8 words). Capture the most important concepts and their relationships.`;
+Valid category values: "definition", "concept", "example", "formula", "fact". Create 8-14 cue/note pairs. Keywords should be concise prompts for recall. Notes should be detailed enough to study from. Use a good mix of categories. Prioritize the most important and testable information.`;
 
 export const KNOWLEDGE_CARDS_PROMPT = `You are an information design AI. Given the following content, extract the most important pieces of information and present them as a set of knowledge cards. Return ONLY valid JSON with this exact structure:
 {
@@ -141,7 +129,7 @@ export const KEY_TAKEAWAYS_PROMPT = `You are a summarization AI. Given the follo
 Create 5-8 takeaways. importance is a number: 1 (low), 2 (medium), or 3 (high). Each takeaway should be self-contained and understandable without reading the full content.`;
 
 export const FORMAT_PROMPTS = {
-  mindMap: MIND_MAP_PROMPT,
+  cornellNotes: CORNELL_NOTES_PROMPT,
   timeline: TIMELINE_PROMPT,
   flashcards: FLASHCARDS_PROMPT,
   infographic: INFOGRAPHIC_PROMPT,
@@ -150,7 +138,7 @@ export const FORMAT_PROMPTS = {
 };
 
 export const FORMAT_NAMES = {
-  mindMap: 'Mind Map',
+  cornellNotes: 'Cornell Notes',
   timeline: 'Timeline',
   flashcards: 'Flashcards',
   infographic: 'Infographic Summary',

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, FolderPlus, Trash2, RefreshCw, Loader2, ChevronDown, Check, Plus, GitBranch, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, FolderPlus, Trash2, RefreshCw, Loader2, ChevronDown, Check, Plus, StickyNote, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../hooks/useAuth';
 import { useCollections } from '../../hooks/useCollections';
@@ -13,7 +13,7 @@ import { FORMAT_NAMES } from '../../services/prompts';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import ExportButton from './ExportButton';
 
-const MindMapView = lazy(() => import('../outputs/MindMapView'));
+const CornellNotesView = lazy(() => import('../outputs/CornellNotesView'));
 const TimelineView = lazy(() => import('../outputs/TimelineView'));
 const FlashcardsView = lazy(() => import('../outputs/FlashcardsView'));
 const InfographicView = lazy(() => import('../outputs/InfographicView'));
@@ -21,7 +21,7 @@ const KeyTakeawaysView = lazy(() => import('../outputs/KeyTakeawaysView'));
 const KnowledgeCardsView = lazy(() => import('../outputs/KnowledgeCardsView'));
 
 const formatComponents = {
-  mindMap: MindMapView,
+  cornellNotes: CornellNotesView,
   timeline: TimelineView,
   flashcards: FlashcardsView,
   infographic: InfographicView,
@@ -29,10 +29,10 @@ const formatComponents = {
   knowledgeCards: KnowledgeCardsView,
 };
 
-const formatKeys = ['mindMap', 'timeline', 'flashcards', 'infographic', 'keyTakeaways', 'knowledgeCards'];
+const formatKeys = ['cornellNotes', 'timeline', 'flashcards', 'infographic', 'keyTakeaways', 'knowledgeCards'];
 
 const formatIcons = {
-  mindMap: GitBranch,
+  cornellNotes: StickyNote,
   timeline: Clock,
   flashcards: Layers,
   infographic: BarChart3,

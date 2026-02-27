@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { GitBranch, Clock, Layers, BarChart3, Zap, LayoutGrid, Sparkles } from 'lucide-react';
+import { StickyNote, Clock, Layers, BarChart3, Zap, LayoutGrid, Sparkles } from 'lucide-react';
 
 const formats = [
-  { key: 'mindMap', icon: GitBranch, title: 'Mind Map', description: 'Best for: understanding connections between concepts', color: 'indigo', preview: 'mindmap' },
+  { key: 'cornellNotes', icon: StickyNote, title: 'Cornell Notes', description: 'Best for: structured study notes with cues and summaries', color: 'indigo', preview: 'cornell' },
   { key: 'timeline', icon: Clock, title: 'Timeline', description: 'Best for: historical events, project sequences', color: 'amber', preview: 'timeline' },
   { key: 'flashcards', icon: Layers, title: 'Flashcards', description: 'Best for: studying, memorization, review', color: 'purple', preview: 'flashcards' },
   { key: 'infographic', icon: BarChart3, title: 'Infographic Summary', description: 'Best for: reports, data-heavy content', color: 'cyan', preview: 'infographic' },
@@ -24,20 +24,23 @@ function FormatPreview({ type, color }) {
   const s = c.stroke;
 
   switch (type) {
-    case 'mindmap':
+    case 'cornell':
       return (
         <svg width="100%" height="48" viewBox="0 0 120 48" fill="none">
-          <circle cx="60" cy="24" r="5" fill={s} fillOpacity="0.3" />
-          <line x1="60" y1="24" x2="25" y2="10" stroke={s} strokeOpacity="0.3" strokeWidth="1.5" />
-          <line x1="60" y1="24" x2="25" y2="38" stroke={s} strokeOpacity="0.3" strokeWidth="1.5" />
-          <line x1="60" y1="24" x2="95" y2="10" stroke={s} strokeOpacity="0.3" strokeWidth="1.5" />
-          <line x1="60" y1="24" x2="95" y2="38" stroke={s} strokeOpacity="0.3" strokeWidth="1.5" />
-          <circle cx="25" cy="10" r="3.5" fill={s} fillOpacity="0.2" />
-          <circle cx="25" cy="38" r="3.5" fill={s} fillOpacity="0.2" />
-          <circle cx="95" cy="10" r="3.5" fill={s} fillOpacity="0.2" />
-          <circle cx="95" cy="38" r="3.5" fill={s} fillOpacity="0.2" />
-          <rect x="15" y="6" width="20" height="8" rx="4" fill={s} fillOpacity="0.08" />
-          <rect x="85" y="6" width="20" height="8" rx="4" fill={s} fillOpacity="0.08" />
+          {/* Cue column */}
+          <rect x="8" y="4" width="30" height="40" rx="3" fill={s} fillOpacity="0.04" stroke={s} strokeOpacity="0.1" strokeWidth="1" />
+          {/* Notes column */}
+          <rect x="42" y="4" width="70" height="28" rx="3" fill={s} fillOpacity="0.06" stroke={s} strokeOpacity="0.12" strokeWidth="1" />
+          {/* Summary bar */}
+          <rect x="42" y="36" width="70" height="8" rx="3" fill={s} fillOpacity="0.1" stroke={s} strokeOpacity="0.15" strokeWidth="1" />
+          {/* Cue lines */}
+          <rect x="12" y="10" width="22" height="3" rx="1.5" fill={s} fillOpacity="0.2" />
+          <rect x="12" y="18" width="18" height="3" rx="1.5" fill={s} fillOpacity="0.15" />
+          <rect x="12" y="26" width="20" height="3" rx="1.5" fill={s} fillOpacity="0.2" />
+          {/* Note lines */}
+          <rect x="48" y="10" width="56" height="3" rx="1.5" fill={s} fillOpacity="0.12" />
+          <rect x="48" y="17" width="48" height="3" rx="1.5" fill={s} fillOpacity="0.08" />
+          <rect x="48" y="24" width="52" height="3" rx="1.5" fill={s} fillOpacity="0.12" />
         </svg>
       );
     case 'timeline':

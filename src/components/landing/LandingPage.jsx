@@ -18,23 +18,28 @@ const inputCycles = [
 ];
 
 const outputCycles = [
-  { type: 'Mind Map', color: 'text-indigo-400' },
+  { type: 'Cornell Notes', color: 'text-indigo-400' },
   { type: 'Flashcards', color: 'text-purple-400' },
   { type: 'Timeline', color: 'text-amber-400' },
 ];
 
-function MiniMindMap() {
+function MiniCornellNotes() {
   return (
     <svg width="120" height="80" viewBox="0 0 120 80" className="text-indigo-400">
-      <motion.circle cx="60" cy="40" r="6" fill="currentColor" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }} />
-      <motion.line x1="60" y1="40" x2="25" y2="15" stroke="currentColor" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.3 }} />
-      <motion.line x1="60" y1="40" x2="95" y2="15" stroke="currentColor" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.3 }} />
-      <motion.line x1="60" y1="40" x2="25" y2="65" stroke="currentColor" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.3 }} />
-      <motion.line x1="60" y1="40" x2="95" y2="65" stroke="currentColor" strokeWidth="1.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.7, duration: 0.3 }} />
-      <motion.circle cx="25" cy="15" r="4" fill="currentColor" opacity="0.7" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5 }} />
-      <motion.circle cx="95" cy="15" r="4" fill="currentColor" opacity="0.7" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6 }} />
-      <motion.circle cx="25" cy="65" r="4" fill="currentColor" opacity="0.7" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.7 }} />
-      <motion.circle cx="95" cy="65" r="4" fill="currentColor" opacity="0.7" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8 }} />
+      {/* Cue column */}
+      <motion.rect x="8" y="6" width="30" height="56" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.2, duration: 0.4 }} />
+      {/* Notes area */}
+      <motion.rect x="42" y="6" width="70" height="40" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 0.4 }} />
+      {/* Summary bar */}
+      <motion.rect x="42" y="50" width="70" height="12" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.6" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.3 }} />
+      {/* Cue text lines */}
+      {[18, 32, 46].map((y, i) => (
+        <motion.rect key={`cue-${i}`} x="14" y={y} width={18 - i * 2} height="3" rx="1.5" fill="currentColor" opacity="0.5" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.5 + i * 0.1 }} />
+      ))}
+      {/* Note text lines */}
+      {[16, 26, 36].map((y, i) => (
+        <motion.rect key={`note-${i}`} x="48" y={y} width={56 - i * 8} height="3" rx="1.5" fill="currentColor" opacity="0.35" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.6 + i * 0.1 }} />
+      ))}
     </svg>
   );
 }
@@ -71,7 +76,7 @@ function MiniTimeline() {
   );
 }
 
-const outputPreviews = [MiniMindMap, MiniFlashcards, MiniTimeline];
+const outputPreviews = [MiniCornellNotes, MiniFlashcards, MiniTimeline];
 
 function TypewriterText({ text, className }) {
   const [displayed, setDisplayed] = useState('');

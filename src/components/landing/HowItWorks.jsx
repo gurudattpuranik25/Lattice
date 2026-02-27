@@ -23,7 +23,7 @@ const steps = [
     icon: LayoutGrid,
     num: 3,
     title: 'See It Visually',
-    description: 'Get interactive mind maps, flashcards, timelines, knowledge cards, and more.',
+    description: 'Get Cornell notes, flashcards, timelines, knowledge cards, and more.',
     gradient: 'from-emerald-400 to-emerald-600',
     color: { bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
   },

@@ -381,7 +381,7 @@ export default function NewDistill() {
             </button>
           </div>
 
-          <FormatSelector onSelect={handleFormatSelect} recommended={['keyTakeaways', 'mindMap']} />
+          <FormatSelector onSelect={handleFormatSelect} recommended={['keyTakeaways', 'cornellNotes']} />
         </div>
       )}
 

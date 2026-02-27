@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
-import { GitBranch, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
+import { StickyNote, Clock, Layers, BarChart3, Zap, LayoutGrid } from 'lucide-react';
 
 const formats = [
   {
-    icon: GitBranch,
-    title: 'Mind Map',
-    description: 'See how ideas connect in a visual branching structure',
+    icon: StickyNote,
+    title: 'Cornell Notes',
+    description: 'Structured cue-and-note pairs for effective study and revision',
     color: 'indigo',
-    preview: 'mindmap',
+    preview: 'cornell',
   },
   {
     icon: Clock,
@@ -59,18 +59,16 @@ function MiniPreview({ type, color }) {
   const c = colorStyles[color];
 
   switch (type) {
-    case 'mindmap':
+    case 'cornell':
       return (
         <svg width="48" height="32" viewBox="0 0 48 32" className={`${c.text} opacity-40 group-hover:opacity-70 transition-opacity duration-300`}>
-          <circle cx="24" cy="16" r="3" fill="currentColor" />
-          <line x1="24" y1="16" x2="10" y2="6" stroke="currentColor" strokeWidth="1.5" />
-          <line x1="24" y1="16" x2="10" y2="26" stroke="currentColor" strokeWidth="1.5" />
-          <line x1="24" y1="16" x2="38" y2="10" stroke="currentColor" strokeWidth="1.5" />
-          <line x1="24" y1="16" x2="38" y2="22" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="10" cy="6" r="2" fill="currentColor" />
-          <circle cx="10" cy="26" r="2" fill="currentColor" />
-          <circle cx="38" cy="10" r="2" fill="currentColor" />
-          <circle cx="38" cy="22" r="2" fill="currentColor" />
+          <rect x="4" y="2" width="12" height="24" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <rect x="18" y="2" width="26" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <rect x="18" y="22" width="26" height="6" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.6" />
+          <line x1="7" y1="8" x2="13" y2="8" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          <line x1="7" y1="14" x2="12" y2="14" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          <line x1="21" y1="8" x2="40" y2="8" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+          <line x1="21" y1="14" x2="36" y2="14" stroke="currentColor" strokeWidth="1" opacity="0.4" />
         </svg>
       );
     case 'timeline':
