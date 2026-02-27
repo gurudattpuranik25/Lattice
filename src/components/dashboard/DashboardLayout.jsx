@@ -1,8 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { useOutlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
 import ScrollToTop from '../shared/ScrollToTop';
+
+// Freezes the outlet content at mount time so the exiting AnimatePresence
+// child keeps showing the OLD route instead of prematurely rendering the
+// NEW route (which would cause double-mount and data-loss issues).
+function FrozenOutlet() {
+  const outlet = useOutlet();
+  const [frozen] = useState(outlet);
+  return frozen;
+}
 
 export default function DashboardLayout() {
   const location = useLocation();
@@ -39,7 +48,7 @@ export default function DashboardLayout() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
             >
-              <Outlet />
+              <FrozenOutlet />
             </motion.div>
           </AnimatePresence>
         </div>
