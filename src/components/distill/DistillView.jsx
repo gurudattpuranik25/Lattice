@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../hooks/useAuth';
 import { useCollections } from '../../hooks/useCollections';
 import ConfirmDialog from '../shared/ConfirmDialog';
-import { subscribeToDistill, updateDistill, deleteDistill, addDistillToCollection, removeDistillFromCollection, createCollection } from '../../services/firestoreService';
+import { getDistill, updateDistill, deleteDistill, addDistillToCollection, removeDistillFromCollection, createCollection } from '../../services/firestoreService';
 import { processWithClaude } from '../../services/claudeService';
 import { getSourceLabel, getFormatColor } from '../../utils/sourceTypeDetector';
 import { FORMAT_NAMES } from '../../services/prompts';
@@ -214,58 +214,64 @@ export default function DistillView() {
   const navigate = useNavigate();
   const outputRef = useRef(null);
 
-  const [distill, setDistill] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [activeFormat, setActiveFormat] = useState(null);
+  // Try reading from sessionStorage (written by NewDistill before navigating).
+  // This is a browser API — survives AnimatePresence remounts, React lifecycle, everything.
+  const [distill, setDistill] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem(`distill:${id}`);
+      if (raw) {
+        sessionStorage.removeItem(`distill:${id}`);
+        return JSON.parse(raw);
+      }
+    } catch { /* ignore parse errors */ }
+    return null;
+  });
+  const [loading, setLoading] = useState(!distill);
+  const [activeFormat, setActiveFormat] = useState(distill?.outputFormat || null);
   const [generating, setGenerating] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
-  const [titleInput, setTitleInput] = useState('');
+  const [titleInput, setTitleInput] = useState(distill?.title || '');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const notFoundTimer = useRef(null);
 
   usePageTitle(distill ? `${distill.title} — ${FORMAT_NAMES[activeFormat] || ''}` : 'Loading...');
 
   useEffect(() => {
     if (!user || !id) return;
-    setLoading(true);
+    // Already have data from sessionStorage — skip fetch
+    if (distill) return;
 
-    // Clear any pending not-found timer from a previous render
-    if (notFoundTimer.current) clearTimeout(notFoundTimer.current);
+    let cancelled = false;
 
-    const unsubscribe = subscribeToDistill(user.uid, id, (data) => {
-      if (data) {
-        // Data arrived — cancel any pending not-found redirect
-        if (notFoundTimer.current) {
-          clearTimeout(notFoundTimer.current);
-          notFoundTimer.current = null;
+    async function load() {
+      // Retry up to 3 times with increasing delay to handle
+      // Firestore write propagation lag in production
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const data = await getDistill(user.uid, id);
+          if (cancelled) return;
+          if (data) {
+            setDistill(data);
+            setActiveFormat(data.outputFormat);
+            setTitleInput(data.title);
+            setLoading(false);
+            return;
+          }
+        } catch (err) {
+          console.error('Distill fetch error:', err);
         }
-        setDistill(data);
-        setActiveFormat(prev => prev || data.outputFormat);
-        setTitleInput(data.title);
-        setLoading(false);
-      } else if (!notFoundTimer.current) {
-        // Document not found yet — wait before redirecting.
-        // onSnapshot fires with null when the doc doesn't exist YET
-        // (e.g. serverTimestamp hasn't resolved, or AnimatePresence
-        // caused a premature mount). Give it time to appear.
-        notFoundTimer.current = setTimeout(() => {
-          toast.error('Distill not found');
-          navigate('/dashboard');
-        }, 5000);
+        // Wait before retrying (500ms, 1500ms)
+        if (attempt < 2) {
+          await new Promise(r => setTimeout(r, 500 + attempt * 1000));
+        }
       }
-    }, (error) => {
-      console.error('Distill subscription error:', error);
-      toast.error('Failed to load distill');
-      setLoading(false);
-    });
+      if (!cancelled) {
+        toast.error('Distill not found');
+        navigate('/dashboard');
+      }
+    }
 
-    return () => {
-      unsubscribe();
-      if (notFoundTimer.current) {
-        clearTimeout(notFoundTimer.current);
-        notFoundTimer.current = null;
-      }
-    };
+    load();
+    return () => { cancelled = true; };
   }, [user, id]);
 
   const handleFormatSwitch = async (format) => {
@@ -353,7 +359,14 @@ export default function DistillView() {
     );
   }
 
-  if (!distill) return null;
+  if (!distill) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <Loader2 size={32} className="animate-spin text-indigo-400" />
+        <p className="text-zinc-400 text-sm">Loading distill...</p>
+      </div>
+    );
+  }
 
   const OutputComponent = formatComponents[activeFormat];
   const outputData = distill.outputs?.[activeFormat];

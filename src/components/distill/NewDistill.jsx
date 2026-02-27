@@ -184,14 +184,26 @@ export default function NewDistill() {
       setProcessingStep('building');
       await new Promise(r => setTimeout(r, 800));
 
-      const distillId = await createDistill(user.uid, {
+      const distillData = {
         title: output.title || sourceInfo.fileName || 'Untitled',
         sourceType,
         sourceInfo,
         extractedTextPreview: getTextPreview(extractedText),
         outputFormat: format,
         outputs: { [format]: output },
-      });
+      };
+
+      const distillId = await createDistill(user.uid, distillData);
+
+      // Stash in sessionStorage so DistillView can read it instantly.
+      // sessionStorage is a browser API — immune to React remounts,
+      // AnimatePresence lifecycle, and Firestore read latency.
+      try {
+        sessionStorage.setItem(
+          `distill:${distillId}`,
+          JSON.stringify({ id: distillId, ...distillData })
+        );
+      } catch { /* quota exceeded — DistillView will fall back to Firestore */ }
 
       setProcessingStep('done');
       await new Promise(r => setTimeout(r, 1000));
